@@ -1,7 +1,7 @@
 import { Segment } from './segment';
 
 /**
- * Unit tests to verify the basic functionality of the `Segment` objects.
+ * Test suite for the Segment class.
  */
 describe('Segment', () => {
 
