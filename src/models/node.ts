@@ -1,12 +1,5 @@
+import { Direction } from '../interfaces/interface';
 import { Segment } from './segment';
-
-/**
- * Enum utilised for identifying path direction, e.g., left or right in the tree.
- */
-enum Direction {
-  LEFT = 'Left',
-  RIGHT = 'Right'
-}
 
 /**
  * Represents a binary search tree node for managing segments.
