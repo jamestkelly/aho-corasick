@@ -1,5 +1,4 @@
-import { Node } from './node';
-import { Segment } from './segment';
+import { Node, Segment } from '../models';
 
 /**
  * @description
@@ -31,7 +30,11 @@ export class Tree {
 
     for (const segment of sortedSegments) {
       if (!this.hasSegment(removed, segment)) {
-        removed.push(...this.root.getOverlappingSegments(segment).filter((o) => !this.hasSegment(removed, o)));
+        removed.push(
+          ...this.root
+            .getOverlappingSegments(segment)
+            .filter((o) => !this.hasSegment(removed, o))
+        );
       }
     }
 

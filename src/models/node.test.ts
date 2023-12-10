@@ -1,5 +1,4 @@
-import { Segment } from './segment';
-import { Node } from './node';
+import { Segment, Node } from '../models';
 
 /**
  * Test suite for the Node class.

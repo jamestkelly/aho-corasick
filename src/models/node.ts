@@ -1,5 +1,5 @@
-import { Direction } from '../interfaces/interface';
-import { Segment } from './segment';
+import { Direction } from '../interfaces';
+import { Segment } from '../models';
 
 /**
  * @description

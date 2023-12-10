@@ -15,7 +15,12 @@
   },
   "keywords": [
     "Aho-Corasick",
-    "TypeScript"
+    "TypeScript",
+    "trie",
+    "string matching",
+    "aho-corasick",
+    "search",
+    "match"
   ],
   "author": "Jim Kelly",
   "license": "MIT",

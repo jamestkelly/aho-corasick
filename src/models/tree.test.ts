@@ -1,5 +1,4 @@
-import { Segment } from './segment';
-import { Tree } from './tree';
+import { Segment, Tree } from '../models';
 
 /**
  * Test suite for the SegmentTree class.
