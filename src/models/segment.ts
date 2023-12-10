@@ -1,10 +1,12 @@
 /**
+ * @description
  * Represents a closed interval (segment) in mathematics.
  * A closed interval is a set of points between two values (a and b),
  * where both endpoints are included in the interval.
  */
 export class Segment {
   /**
+   * @description
    * Creates a new closed interval (segment) with specified start and end points.
    *
    * @param a The starting point of the interval.
@@ -16,6 +18,7 @@ export class Segment {
   ) {}
 
   /**
+   * @description
    * Checks if this interval is equal to another interval.
    *
    * @param {Segment} comparison The interval to compare with.
@@ -26,6 +29,7 @@ export class Segment {
   }
 
   /**
+   * @description
    * Calculates and returns the size of the interval.
    * The size of the interval is the number of points it contains.
    *

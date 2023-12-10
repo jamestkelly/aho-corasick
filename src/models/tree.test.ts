@@ -5,10 +5,8 @@ import { Tree } from './tree';
  * Test suite for the SegmentTree class.
  */
 describe('SegmentTree', () => {
-
   // Test suite for the removeOverlappingSegments method
   describe('removeOverlappingSegments', () => {
-
     // Test case to ensure all overlapping segments are removed
     test('are all overlapping segments removed', () => {
       // Sample segments for testing

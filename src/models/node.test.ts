@@ -5,10 +5,8 @@ import { Node } from './node';
  * Test suite for the Node class.
  */
 describe('Node', () => {
-
   // Test suite for the getOverlappingSegments method
   describe('getOverlappingSegments', () => {
-
     // Sample segments for testing
     const segments = [
       new Segment(0, 2),

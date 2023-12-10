@@ -4,10 +4,8 @@ import { Segment } from './segment';
  * Test suite for the Segment class.
  */
 describe('Segment', () => {
-
   // Test suite for the isEqual method
   describe('is equal to', () => {
-
     // Test case for equality with itself
     test('itself', () => {
       // Create a Segment instance
@@ -30,7 +28,6 @@ describe('Segment', () => {
 
   // Test suite for the isEqual method
   describe('is not equal to', () => {
-
     // Test case for inequality with a different segment
     test('a different segment', () => {
       // Create two different Segment instances
@@ -44,7 +41,6 @@ describe('Segment', () => {
 
   // Test suite for the size method
   describe('is of size', () => {
-
     // Test case for the size method
     test('equal to (b - a + 1)', () => {
       // Create a Segment instance

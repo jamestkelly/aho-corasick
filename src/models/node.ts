@@ -2,6 +2,7 @@ import { Direction } from '../interfaces/interface';
 import { Segment } from './segment';
 
 /**
+ * @description
  * Represents a binary search tree node for managing segments.
  */
 export class Node {
@@ -11,6 +12,7 @@ export class Node {
   private right: Node | null = null;
 
   /**
+   * @description
    * Constructs a Node with the given segments and initializes its properties.
    *
    * @param {Array<Segment>} segments The segments to be managed by the node.
@@ -38,6 +40,7 @@ export class Node {
   }
 
   /**
+   * @description
    * Gets overlapping segments with the given segment.
    *
    * @param {Segment} s The segment to check for overlapping segments.
@@ -69,6 +72,7 @@ export class Node {
   }
 
   /**
+   * @description
    * Gets overlapping segments in a specific direction relative to the given segment.
    *
    * @param {Segment} s The segment to check for overlapping segments.
@@ -90,6 +94,7 @@ export class Node {
   }
 
   /**
+   * @description
    * Calculates the midpoint of the given segments.
    *
    * @param {Array<Segment>} segments The segments to calculate the midpoint from.

@@ -2,12 +2,14 @@ import { Node } from './node';
 import { Segment } from './segment';
 
 /**
+ * @description
  * Represents a tree structure for managing segments and removing overlapping segments.
  */
 export class Tree {
   private root: Node;
 
   /**
+   * @description
    * Creates a new tree with the specified segments.
    *
    * @param {Array<Segment>} segments An array of segments to initialize the tree.
@@ -17,6 +19,7 @@ export class Tree {
   }
 
   /**
+   * @description
    * Removes overlapping segments from the given array of segments.
    *
    * @param {Array<T>} segments An array of segments to remove overlaps from.
@@ -39,6 +42,7 @@ export class Tree {
   }
 
   /**
+   * @description
    * Checks if a segment is present in the array of segments.
    *
    * @param {Array<Segment>} segments An array of segments to check against.
