@@ -1,4 +1,3 @@
-import { Direction } from '../interfaces';
 import { Segment } from '../models';
 import { Node } from './node';
 

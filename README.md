@@ -165,7 +165,7 @@ _For more examples, please refer to the [Documentation](https://github.com/james
 ## Roadmap
 
 - [x] Base implementation of the Aho-corasick algorithm.
-- [ ] Add GitHub workflow to test & build the package.
+- [x] Add GitHub workflow to test & build the package.
 - [x] Implement feature to return `non-matches`, i.e., all words that _did not match_.
   - [x] Additional nice to have is to only return the words that matched and their counts, i.e., without position in the string.
 
