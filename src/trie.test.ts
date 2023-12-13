@@ -20,7 +20,7 @@ describe('Trie', () => {
 
     test('keywords array of empty strings to throw an error', () => {
       expect(() => {
-        const trie = new Trie(['', '']);
+        const _trie = new Trie(['', '']);
       }).toThrow('Provided string `keyword` is a null or empty string.');
     });
   });
