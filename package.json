@@ -1,5 +1,5 @@
 {
-  "name": "aho-corasick",
+  "name": "@jamestkelly/aho-corasick",
   "version": "1.0.0",
   "description": "An implementation of the Aho-Corasick algorithm in TypeScript.",
   "main": "index.js",
