@@ -71,6 +71,7 @@
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#references">References</a></li>
   </ol>
 </details>
 
@@ -92,12 +93,15 @@
 
 The Aho—Corasick algorithm is a [string-searching algorithm](https://en.wikipedia.org/wiki/String-searching_algorithm) invented by Alfred V. Aho and Margaret J. Corasick in 1975. [\[1\]](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm). This repository contains an implementation of this algorithm in TypeScript for use in efficient string matching as an aid to bibliographic searches.
 
-This package is referenced and inspired from [tanishiking's aho-corasick-js](https://github.com/tanishiking/aho-corasick-js) package, providing some minor improvements to optimisation and additional functionality.
+This package is referenced and inspired from [tanishiking's aho-corasick-js](https://github.com/tanishiking/aho-corasick-js) package, providing some minor improvements to optimisation and additional functionality. 
+
+This package is hosted on `npm` and is accessible [here](https://www.npmjs.com/package/@jimtkelly/aho-corasick).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
 
+- [![npm][npm.js]][npm-url]
 - [![TypeScript][TypeScript.ts]][TypeScript-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -110,9 +114,9 @@ This package is referenced and inspired from [tanishiking's aho-corasick-js](htt
 
 To use this project, please install the required packages as available from `npm`.
 
-- npm
+- `npm`
   ```sh
-  npm install @jamestkelly/aho-corasick
+  npm i @jimtkelly/aho-corasick
   ```
 
 <!-- USAGE EXAMPLES -->
@@ -217,6 +221,10 @@ Project Link: [https://github.com/jamestkelly/aho-corasick](https://github.com/j
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## References
+
+\[1\] "Aho–Corasick algorithm," in Wikipedia: The Free Encyclopedia; (Wikimedia Foundation Inc., updated 11 December 2023, 05:39 UTC) [encyclopedia on-line]; available from https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm; Internet; retrieved 14 December 2023.
+
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
@@ -233,5 +241,7 @@ Project Link: [https://github.com/jamestkelly/aho-corasick](https://github.com/j
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/jimkellyt
 [product-screenshot]: doc/img/aho-corasick-diagram-wikipedia.png
+[npm.js]: https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white
+[npm-url]: https://www.npmjs.com/
 [TypeScript.ts]: https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white
 [TypeScript-url]: https://www.typescriptlang.org/
