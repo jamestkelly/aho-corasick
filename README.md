@@ -71,6 +71,7 @@
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#references">References</a></li>
   </ol>
 </details>
 
@@ -110,9 +111,9 @@ This package is referenced and inspired from [tanishiking's aho-corasick-js](htt
 
 To use this project, please install the required packages as available from `npm`.
 
-- npm
+- `npm`
   ```sh
-  npm install @jamestkelly/aho-corasick
+  npm i @jimtkelly/aho-corasick
   ```
 
 <!-- USAGE EXAMPLES -->
@@ -216,6 +217,10 @@ Project Link: [https://github.com/jamestkelly/aho-corasick](https://github.com/j
 - [Best-README-Template | othneildrew](https://github.com/othneildrew/Best-README-Template/tree/master)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## References
+
+\[1\] "Aho–Corasick algorithm," in Wikipedia: The Free Encyclopedia; (Wikimedia Foundation Inc., updated 11 December 2023, 05:39 UTC) [encyclopedia on-line]; available from https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm; Internet; retrieved 14 December 2023.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
