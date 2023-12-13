@@ -1,8 +1,9 @@
 import { Segment } from './segment';
 
 /**
- * @description 
- * A match result for a given string corresponding to a segment within a `Trie`.
+ * @class Match
+ * @classdesc A match result for a given string corresponding to a segment within a `Trie`.
+ * @extends Segment
  */
 export class Match extends Segment {
   constructor(

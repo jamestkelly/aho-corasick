@@ -45,7 +45,27 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li>
+      <a href="#usage">Usage</a>
+      <ul>
+        <li>
+          <a href="#create-trie-and-add-keywords">
+            Create <code>Trie</code> and Add Keywords
+          </a>
+        </li>
+        <li>
+          <a href="#get-matches">
+            Get <code>Matches</code>
+          </a>
+        </li>
+        <li>
+          <a href="#get-inverse-matches">
+            Get Inverse <code>Matches</code>
+          </a>
+        </li>
+        <li><a href="#get-string-occurrences">Get String Occurrences</a></li>
+      </ul>
+    </li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -55,6 +75,7 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 <div align="center">
@@ -82,6 +103,7 @@ This package is referenced and inspired from [tanishiking's aho-corasick-js](htt
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 ### Installation
@@ -94,27 +116,65 @@ To use this project, please install the required packages as available from `npm
   ```
 
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
-TODO: Add examples here.
+### Create `Trie` and Add Keywords
+
+It's important to note that if the `param`, `keywords` is an array of empty strings, e.g., `[' ', '']`, then an error will be thrown.
+
+```typescript
+const trie = new Trie();
+trie.addKeyword('apple');
+trie.addKeyword('banana');
+```
+
+### Get `Matches`
+
+```typescript
+const trie = new Trie(['apple', 'banana']);
+const matches = trie.getMatches('apple banana');
+console.log(matches);
+// Output: [{ start: 0, end: 4, keyword: 'apple' }, { start: 6, end: 11, keyword: 'banana' }]
+```
+
+### Get Inverse `Matches`
+
+```typescript
+const trie = new Trie(['cat', 'dog']);
+const nonMatches = trie.getNonMatches('The cat and the dog');
+console.log(nonMatches);
+// Output: ['The ', ' and the ']
+```
+
+### Get String Occurrences
+
+```typescript
+const trie = new Trie(['apple', 'banana']);
+const occurrences = trie.getStringOccurrences('apple banana apple');
+console.log(occurrences);
+// Output: [{ keyword: 'apple', occurrences: 2 }, { keyword: 'banana', occurrences: 1 }]
+```
 
 _For more examples, please refer to the [Documentation](https://github.com/jamestkelly/aho-corasick/blob/main/doc/examples.ts)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
+
 ## Roadmap
 
-- [ ] Base implementation of the Aho-corasick algorithm.
+- [x] Base implementation of the Aho-corasick algorithm.
 - [ ] Add GitHub workflow to test & build the package.
-- [ ] Implement feature to return `non-matches`, i.e., all words that _did not match_.
-  - [ ] Additional nice to have is to only return the words that matched and their counts, i.e., without position in the string.
+- [x] Implement feature to return `non-matches`, i.e., all words that _did not match_.
+  - [x] Additional nice to have is to only return the words that matched and their counts, i.e., without position in the string.
 
 See the [open issues](https://github.com/jamestkelly/aho-corasick/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -131,6 +191,7 @@ Don't forget to give the project a star! Thanks again!
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
@@ -138,6 +199,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
+
 ## Contact
 
 Jim Kelly - [jimkelly.t@outlook.com](mailto:jimkelly.t@outlook.com)
@@ -147,6 +209,7 @@ Project Link: [https://github.com/jamestkelly/aho-corasick](https://github.com/j
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
 
 - [aho-corasick-js | tanishking](https://github.com/tanishiking/aho-corasick-js)
@@ -156,6 +219,7 @@ Project Link: [https://github.com/jamestkelly/aho-corasick](https://github.com/j
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/jamestkelly/aho-corasick.svg?style=for-the-badge
 [contributors-url]: https://github.com/jamestkelly/aho-corasick/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/jamestkelly/aho-corasick.svg?style=for-the-badge

@@ -2,8 +2,8 @@ import { Direction } from '../interfaces';
 import { Segment } from '../models';
 
 /**
- * @description
- * Represents a binary search tree node for managing segments.
+ * @class Node
+ * @classdesc Represents a binary search tree node for managing segments.
  */
 export class Node {
   private midPoint: number;
@@ -25,8 +25,8 @@ export class Node {
     ];
 
     segments.forEach((s) => {
-      if (s.b < this.midPoint) paths[0].push(s);
-      else if (s.a > this.midPoint) paths[1].push(s);
+      if (s.end < this.midPoint) paths[0].push(s);
+      else if (s.start > this.midPoint) paths[1].push(s);
       else this.segments.push(s);
     });
 
@@ -47,14 +47,14 @@ export class Node {
    * @returns {Array<Segment>} An array of overlapping segments.
    */
   getOverlappingSegments(s: Segment): Array<Segment> {
-    if (this.midPoint < s.a) {
+    if (this.midPoint < s.start) {
       // Overlapping segments in the right subtree and self
       const rightChild = this.right ? this.right.getOverlappingSegments(s) : [];
       const self = this.getDirectionalOverlappingSegments(s, Direction.RIGHT);
 
       const result = [...rightChild, ...self];
       return result.filter((n) => !s.isEqual(n));
-    } else if (s.b < this.midPoint) {
+    } else if (s.end < this.midPoint) {
       // Overlapping segments in the left subtree and self
       const leftChild = this.left ? this.left.getOverlappingSegments(s) : [];
       const self = this.getDirectionalOverlappingSegments(s, Direction.LEFT);
@@ -86,9 +86,9 @@ export class Node {
     return this.segments.filter((n) => {
       switch (dir) {
         case Direction.LEFT:
-          return n.a <= s.b;
+          return n.start <= s.end;
         case Direction.RIGHT:
-          return n.b >= s.a;
+          return n.end >= s.start;
       }
     });
   }
@@ -104,12 +104,12 @@ export class Node {
     const points = [-1, -1];
 
     segments.forEach((s) => {
-      if (points[0] === -1 || s.a < points[0]) {
-        points[0] = s.a;
+      if (points[0] === -1 || s.start < points[0]) {
+        points[0] = s.start;
       }
 
-      if (points[1] === -1 || s.b > points[1]) {
-        points[1] = s.b;
+      if (points[1] === -1 || s.end > points[1]) {
+        points[1] = s.end;
       }
     });
 

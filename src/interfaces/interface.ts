@@ -5,10 +5,8 @@
 export interface TrieOptions {
   allowOverlap: boolean; // Whether overlapping matches are allowed in the Trie.
   caseSensitive: boolean; // Whether the Trie is case-sensitive in matching.
-  invertedMatch: boolean; // Whether to perform inverted matching (exclude matching strings).
   removeWhiteSpaces: boolean; // Whether to trim whitespaces from strings on build the Trie and matching strings.
   wholeWords: boolean; // Whether to match whole words only in the Trie.
-  wordCount: boolean; // Whether to count the occurrences of each word in the Trie.
 }
 
 /**
@@ -18,4 +16,13 @@ export interface TrieOptions {
 export enum Direction {
   LEFT = 'Left',
   RIGHT = 'Right'
+}
+
+/**
+ * @description
+ * Basic interface for storing of the number of times a given keyword is matched.
+ */
+export interface WordCount {
+  keyword: string;
+  occurrences: number;
 }

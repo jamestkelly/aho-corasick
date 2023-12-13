@@ -1,7 +1,7 @@
 /**
- * @description
- * Represents a closed interval (segment) in mathematics.
- * A closed interval is a set of points between two values (a and b),
+ * @class Segment
+ * @classdesc Represents a closed interval (segment) in mathematics.
+ * A closed interval is a set of points between two values (a and end),
  * where both endpoints are included in the interval.
  */
 export class Segment {
@@ -9,12 +9,12 @@ export class Segment {
    * @description
    * Creates a new closed interval (segment) with specified start and end points.
    *
-   * @param a The starting point of the interval.
-   * @param b The ending point of the interval.
+   * @param start The starting point of the interval.
+   * @param end The ending point of the interval.
    */
   constructor(
-    readonly a: number,
-    readonly b: number
+    readonly start: number,
+    readonly end: number
   ) {}
 
   /**
@@ -25,7 +25,7 @@ export class Segment {
    * @returns {boolean} True if the intervals are equal, false otherwise.
    */
   isEqual(comparison: Segment): boolean {
-    return this.a === comparison.a && this.b === comparison.b;
+    return this.start === comparison.start && this.end === comparison.end;
   }
 
   /**
@@ -36,6 +36,6 @@ export class Segment {
    * @returns {number} The size of the interval.
    */
   size(): number {
-    return this.b - this.a + 1;
+    return this.end - this.start + 1;
   }
 }

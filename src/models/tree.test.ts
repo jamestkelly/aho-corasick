@@ -1,33 +1,66 @@
-import { Segment, Tree } from '../models';
+import { Tree } from './tree';
+import { Segment } from './segment';
+import { Node } from './node';
 
-/**
- * Test suite for the SegmentTree class.
- */
-describe('SegmentTree', () => {
-  // Test suite for the removeOverlappingSegments method
+describe('Tree', () => {
+  describe('constructor', () => {
+    test('should create a new tree with the specified segments', () => {
+      const segments = [new Segment(1, 3), new Segment(4, 6)];
+      const tree = new Tree(segments);
+      expect(tree).toBeInstanceOf(Tree);
+      expect(tree['root']).toBeInstanceOf(Node);
+    });
+  });
+
   describe('removeOverlappingSegments', () => {
-    // Test case to ensure all overlapping segments are removed
-    test('are all overlapping segments removed', () => {
-      // Sample segments for testing
+    test('should remove overlapping segments from the given array of segments', () => {
       const segments = [
-        new Segment(0, 2),
-        new Segment(4, 5),
-        new Segment(2, 10),
-        new Segment(6, 13),
-        new Segment(9, 15),
-        new Segment(12, 16)
+        new Segment(1, 5),
+        new Segment(2, 4),
+        new Segment(6, 9),
+        new Segment(8, 10),
+        new Segment(12, 15)
       ];
+      const tree = new Tree(segments);
 
-      // Create a SegmentTree instance with the sample segments
-      const intervalTree = new Tree(segments);
+      const result = tree.removeOverlappingSegments(segments);
+      expect(result).toHaveLength(3);
+      expect(result).toEqual([segments[0], segments[2], segments[4]]);
+    });
 
-      // Remove overlapping segments from the tree
-      const filtered = intervalTree.removeOverlappingSegments(segments);
+    test('should handle empty array of segments', () => {
+      const tree = new Tree([]);
+      const result = tree.removeOverlappingSegments([]);
+      expect(result).toEqual([]);
+    });
 
-      // Assertions
-      expect(filtered).toHaveLength(2);
-      expect(filtered[0]).toEqual(new Segment(2, 10));
-      expect(filtered[1]).toEqual(new Segment(12, 16));
+    test('should handle array with a single segment', () => {
+      const segments = [new Segment(1, 5)];
+      const tree = new Tree(segments);
+      const result = tree.removeOverlappingSegments(segments);
+      expect(result).toEqual(segments);
+    });
+
+    test('should handle non-overlapping segments', () => {
+      const segments = [
+        new Segment(1, 3),
+        new Segment(5, 7),
+        new Segment(9, 11)
+      ];
+      const tree = new Tree(segments);
+      const result = tree.removeOverlappingSegments(segments);
+      expect(result).toEqual(segments);
+    });
+
+    test('should handle segments with equal size', () => {
+      const segments = [
+        new Segment(1, 4),
+        new Segment(2, 5),
+        new Segment(3, 6)
+      ];
+      const tree = new Tree(segments);
+      const result = tree.removeOverlappingSegments(segments);
+      expect(result).toEqual([segments[0]]);
     });
   });
 });

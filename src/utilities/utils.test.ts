@@ -1,26 +1,25 @@
-import { isAlphanumeric, isNonEmptyArray } from './utils';
+import {
+  isAlphanumeric,
+  isNonEmptyArray,
+  isEmptyArray,
+  isNullOrEmptyString,
+  nonNullOrEmptyString
+} from './utils';
 
-/**
- * Test suite for the Utils functions.
- */
 describe('utils', () => {
-  // Test for valid arrays with `isNonEmptyArray`
   describe('isNonEmptyArray', () => {
-    // Test case for valid array (populated)
     test('with valid arrays', () => {
       const arrayA = new Array<string>('Hello', 'World');
 
       expect(isNonEmptyArray(arrayA)).toBeTruthy();
     });
 
-    // Test case for initialised but empty array
     test('with empty array', () => {
       const arrayA = new Array<string>();
 
       expect(isNonEmptyArray(arrayA)).toBeFalsy();
     });
 
-    // Test case for uninitialised array
     test('with uninitialised array', () => {
       let arrayA: Array<string> | undefined;
 
@@ -28,9 +27,27 @@ describe('utils', () => {
     });
   });
 
-  // Test for alphanumeric strings with `isAlphanumeric`
+  describe('isEmptyArray', () => {
+    test('with valid arrays', () => {
+      const arrayA = new Array<string>('Hello', 'World');
+
+      expect(isEmptyArray(arrayA)).toBeFalsy();
+    });
+
+    test('with empty array', () => {
+      const arrayA = new Array<string>();
+
+      expect(isEmptyArray(arrayA)).toBeTruthy();
+    });
+
+    test('with uninitialised array', () => {
+      let arrayA: Array<string> | undefined;
+
+      expect(isEmptyArray(arrayA)).toBeTruthy();
+    });
+  });
+
   describe('isAlphanumeric', () => {
-    // Test case for valid strings
     test('with valida alphanumeric strings', () => {
       expect(isAlphanumeric('hello')).toBeTruthy();
       expect(isAlphanumeric('world')).toBeTruthy();
@@ -41,12 +58,33 @@ describe('utils', () => {
       expect(isAlphanumeric('w0r1d')).toBeTruthy();
     });
 
-    // Test case for invalid strings
     test('with invalid alphanumeric string', () => {
       expect(isAlphanumeric('!!')).toBeFalsy();
       expect(isAlphanumeric('word1 word2')).toBeFalsy();
       expect(isAlphanumeric('$$$$')).toBeFalsy();
       expect(isAlphanumeric('')).toBeFalsy();
+    });
+  });
+
+  describe('isNullOrEmptyString', () => {
+    test('with empty strings', () => {
+      expect(isNullOrEmptyString('')).toBeTruthy();
+      expect(isNullOrEmptyString('        ')).toBeTruthy();
+    });
+
+    test('with non-empty strings', () => {
+      expect(isNullOrEmptyString('hello world')).toBeFalsy();
+    });
+  });
+
+  describe('isNullOrEmptyString', () => {
+    test('with empty strings', () => {
+      expect(nonNullOrEmptyString('')).toBeFalsy();
+      expect(nonNullOrEmptyString('        ')).toBeFalsy();
+    });
+
+    test('with non-empty strings', () => {
+      expect(nonNullOrEmptyString('hello world')).toBeTruthy();
     });
   });
 });

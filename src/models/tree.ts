@@ -1,8 +1,8 @@
 import { Node, Segment } from '../models';
 
 /**
- * @description
- * Represents a tree structure for managing segments and removing overlapping segments.
+ * @class Tree
+ * @classdesc Represents a tree structure for managing segments and removing overlapping segments.
  */
 export class Tree {
   private root: Node;
@@ -40,7 +40,7 @@ export class Tree {
 
     return segments
       .slice()
-      .sort((a, b) => a.a - b.a)
+      .sort((a, b) => a.start - b.start)
       .filter((s) => !this.hasSegment(removed, s));
   }
 

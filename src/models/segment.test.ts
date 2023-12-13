@@ -1,53 +1,42 @@
 import { Segment } from './segment';
 
-/**
- * Test suite for the Segment class.
- */
 describe('Segment', () => {
-  // Test suite for the isEqual method
-  describe('is equal to', () => {
-    // Test case for equality with itself
-    test('itself', () => {
-      // Create a Segment instance
-      const n = new Segment(0, 1);
-
-      // Assertion: The segment should be equal to itself
-      expect(n.isEqual(n)).toBeTruthy();
-    });
-
-    // Test case for equality with an equivalent segment
-    test('an equivalent segment', () => {
-      // Create two equivalent Segment instances
-      const n = new Segment(0, 1);
-      const m = new Segment(0, 1);
-
-      // Assertion: The two segments should be equal
-      expect(n.isEqual(m)).toBeTruthy();
+  describe('constructor', () => {
+    test('should create a new segment with specified start and end points', () => {
+      const segment = new Segment(1, 5);
+      expect(segment.start).toBe(1);
+      expect(segment.end).toBe(5);
     });
   });
 
-  // Test suite for the isEqual method
-  describe('is not equal to', () => {
-    // Test case for inequality with a different segment
-    test('a different segment', () => {
-      // Create two different Segment instances
-      const n = new Segment(0, 1);
-      const m = new Segment(0, 2);
+  describe('isEqual', () => {
+    test('should return true for equal segments', () => {
+      const segment1 = new Segment(1, 5);
+      const segment2 = new Segment(1, 5);
+      expect(segment1.isEqual(segment2)).toBe(true);
+    });
 
-      // Assertion: The two segments should not be equal
-      expect(n.isEqual(m)).toBeFalsy();
+    test('should return false for unequal segments', () => {
+      const segment1 = new Segment(1, 5);
+      const segment2 = new Segment(2, 6);
+      expect(segment1.isEqual(segment2)).toBe(false);
     });
   });
 
-  // Test suite for the size method
-  describe('is of size', () => {
-    // Test case for the size method
-    test('equal to (b - a + 1)', () => {
-      // Create a Segment instance
-      const n = new Segment(0, 2);
+  describe('size', () => {
+    test('should return the size of the interval', () => {
+      const segment = new Segment(3, 8);
+      expect(segment.size()).toBe(6);
+    });
 
-      // Assertion: The size of the segment should be equal to (b - a + 1)
-      expect(n.size()).toBe(3);
+    test('should return 1 for a single-point interval', () => {
+      const singlePointSegment = new Segment(5, 5);
+      expect(singlePointSegment.size()).toBe(1);
+    });
+
+    test('should return -2 for an inverse interval', () => {
+      const emptySegment = new Segment(8, 5);
+      expect(emptySegment.size()).toBe(-2);
     });
   });
 });

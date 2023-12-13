@@ -1,77 +1,64 @@
-import { Segment, Node } from '../models';
+import { Direction } from '../interfaces';
+import { Segment } from '../models';
+import { Node } from './node';
 
-/**
- * Test suite for the Node class.
- */
 describe('Node', () => {
-  // Test suite for the getOverlappingSegments method
+  describe('constructor', () => {
+    test('should create a new node with segments and initialize properties', () => {
+      const segments = [new Segment(1, 5), new Segment(3, 8)];
+      const node = new Node(segments);
+      expect(node).toEqual({
+        segments: [
+          { start: 1, end: 5 },
+          { start: 3, end: 8 }
+        ],
+        left: null,
+        right: null,
+        midPoint: 4
+      });
+    });
+  });
+
   describe('getOverlappingSegments', () => {
-    // Sample segments for testing
-    const segments = [
-      new Segment(0, 2),
-      new Segment(1, 3),
-      new Segment(2, 4),
-      new Segment(3, 5),
-      new Segment(4, 6),
-      new Segment(5, 7)
-    ];
+    test('should return overlapping segments with the given segment', () => {
+      const segments = [new Segment(1, 5), new Segment(3, 8)];
+      const node = new Node(segments);
 
-    // Create a Node instance with the sample segments
-    const node = new Node(segments);
-
-    // Test case for the left path
-    test('is left path correct', () => {
-      // Get overlapping segments for a specific segment on the left path
-      const overlaps = node
-        .getOverlappingSegments(new Segment(1, 2))
-        .sort((n, m) => n.a - m.a);
-
-      // Assertions
-      expect(overlaps).toHaveLength(3);
-      expect(overlaps[0]).toEqual(new Segment(0, 2));
-      expect(overlaps[1]).toEqual(new Segment(1, 3));
-      expect(overlaps[2]).toEqual(new Segment(2, 4));
+      const overlappingSegments = node.getOverlappingSegments(
+        new Segment(4, 7)
+      );
+      expect(overlappingSegments).toEqual([
+        new Segment(1, 5),
+        new Segment(3, 8)
+      ]);
     });
 
-    // Test case for the right path
-    test('is right path correct', () => {
-      // Get overlapping segments for a specific segment on the right path
-      const overlaps = node
-        .getOverlappingSegments(new Segment(5, 6))
-        .sort((n, m) => n.a - m.a);
+    test('should not include the same segment in the result', () => {
+      const segments = [new Segment(1, 5), new Segment(3, 8)];
+      const node = new Node(segments);
 
-      // Assertions
-      expect(overlaps).toHaveLength(3);
-      expect(overlaps[0]).toEqual(new Segment(3, 5));
-      expect(overlaps[1]).toEqual(new Segment(4, 6));
-      expect(overlaps[2]).toEqual(new Segment(5, 7));
+      const overlappingSegments = node.getOverlappingSegments(
+        new Segment(1, 5)
+      );
+      expect(overlappingSegments).toEqual([new Segment(3, 8)]);
     });
 
-    // Test case for overlapping segments in general
-    test('are segments correct', () => {
-      // Get overlapping segments for a specific segment
-      const overlaps = node
-        .getOverlappingSegments(new Segment(1, 3))
-        .sort((n, m) => n.a - m.a);
+    test('should handle overlapping in both subtrees', () => {
+      const segments = [
+        new Segment(1, 5),
+        new Segment(6, 10),
+        new Segment(8, 12)
+      ];
+      const node = new Node(segments);
 
-      // Assertions
-      expect(overlaps).toHaveLength(3);
-      expect(overlaps[0]).toEqual(new Segment(0, 2));
-      expect(overlaps[1]).toEqual(new Segment(2, 4));
-      expect(overlaps[2]).toEqual(new Segment(3, 5));
-    });
-
-    // Test case to ensure the result does not contain the original segment (self-reference)
-    test('should not contain self (self-reference)', () => {
-      // Get overlapping segments for a specific segment (self-reference)
-      const overlaps = node
-        .getOverlappingSegments(new Segment(5, 7))
-        .sort((n, m) => n.a - m.a);
-
-      // Assertions
-      expect(overlaps).toHaveLength(2);
-      expect(overlaps[0]).toEqual(new Segment(3, 5));
-      expect(overlaps[1]).toEqual(new Segment(4, 6));
+      const overlappingSegments = node.getOverlappingSegments(
+        new Segment(4, 9)
+      );
+      expect(overlappingSegments).toEqual([
+        new Segment(6, 10),
+        new Segment(8, 12),
+        new Segment(1, 5)
+      ]);
     });
   });
 });
