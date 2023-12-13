@@ -1,0 +1,40 @@
+{
+  "name": "aho-corasick",
+  "version": "1.0.0",
+  "description": "An implementation of the Aho-Corasick algorithm in TypeScript.",
+  "main": "index.js",
+  "scripts": {
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "build": "tsc --project .",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamestkelly/aho-corasick.git"
+  },
+  "keywords": [
+    "Aho-Corasick",
+    "TypeScript",
+    "trie",
+    "string matching",
+    "aho-corasick",
+    "search",
+    "match"
+  ],
+  "author": "Jim Kelly",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jamestkelly/aho-corasick/issues"
+  },
+  "homepage": "https://github.com/jamestkelly/aho-corasick#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.23.5",
+    "@types/jest": "^29.5.10"
+  },
+  "dependencies": {
+    "babel-jest": "^29.7.0",
+    "prettier": "^3.1.0",
+    "ts-jest": "^29.1.1"
+  }
+}
