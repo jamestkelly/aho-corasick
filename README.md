@@ -93,12 +93,15 @@
 
 The Aho—Corasick algorithm is a [string-searching algorithm](https://en.wikipedia.org/wiki/String-searching_algorithm) invented by Alfred V. Aho and Margaret J. Corasick in 1975. [\[1\]](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm). This repository contains an implementation of this algorithm in TypeScript for use in efficient string matching as an aid to bibliographic searches.
 
-This package is referenced and inspired from [tanishiking's aho-corasick-js](https://github.com/tanishiking/aho-corasick-js) package, providing some minor improvements to optimisation and additional functionality.
+This package is referenced and inspired from [tanishiking's aho-corasick-js](https://github.com/tanishiking/aho-corasick-js) package, providing some minor improvements to optimisation and additional functionality. 
+
+This package is hosted on `npm` and is accessible [here](https://www.npmjs.com/package/@jimtkelly/aho-corasick).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
 
+- [![npm][npm.js]][npm-url]
 - [![TypeScript][TypeScript.ts]][TypeScript-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -238,5 +241,7 @@ Project Link: [https://github.com/jamestkelly/aho-corasick](https://github.com/j
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/jimkellyt
 [product-screenshot]: doc/img/aho-corasick-diagram-wikipedia.png
+[npm.js]: https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white
+[npm-url]: https://www.npmjs.com/
 [TypeScript.ts]: https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white
 [TypeScript-url]: https://www.typescriptlang.org/
