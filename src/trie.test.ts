@@ -2,6 +2,31 @@ import { Trie } from './trie';
 
 describe('Trie', () => {
   describe('addKeyword', () => {
+    test('rebuilds suffix matches once per update', () => {
+      const trie = new Trie(['she', 'he']);
+      const keywords = () => trie.getMatches('shex').map((m) => m.keyword);
+      expect(keywords()).toEqual(['she', 'he']);
+      trie.addKeyword('ex');
+      expect(keywords()).toEqual(['she', 'he', 'ex']);
+      trie.addKeyword('e');
+      expect(keywords()).toEqual(['she', 'he', 'e', 'ex']);
+    });
+
+    test.each([false, true])(
+      'both insertion paths respect removeWhiteSpaces=%s',
+      (trim) => {
+        const options = { removeWhiteSpaces: trim };
+        const added = new Trie([], options);
+        added.addKeyword(' Cat ');
+        for (const trie of [added, new Trie([' Cat '], options)]) {
+          expect(trie.getMatches(' cat ')).toEqual([
+            trim
+              ? { start: 1, end: 3, keyword: 'cat' }
+              : { start: 0, end: 4, keyword: ' cat ' }
+          ]);
+        }
+      }
+    );
     test('keyword and text are the same', () => {
       const trie = new Trie(['trie']);
       const matches = trie.getMatches('trie');
@@ -93,6 +118,9 @@ describe('Trie', () => {
   });
 
   describe('getNonMatches', () => {
+    test('nested matches do not expose already matched text', () => {
+      expect(new Trie(['abcd', 'bc']).getNonMatches('abcd!')).toEqual(['!']);
+    });
     test('should return entire text if no matches', () => {
       const trie = new Trie(['cat', 'dog']);
       const nonMatches = trie.getNonMatches('bird');
