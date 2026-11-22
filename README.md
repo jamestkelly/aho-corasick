@@ -128,6 +128,8 @@ To use this project, please install the required packages as available from `npm
 It's important to note that if the `param`, `keywords` is an array of empty strings, e.g., `[' ', '']`, then an error will be thrown.
 
 ```typescript
+import { Trie } from '@jimtkelly/aho-corasick';
+
 const trie = new Trie();
 trie.addKeyword('apple');
 trie.addKeyword('banana');
@@ -180,6 +182,16 @@ See the [open issues](https://github.com/jamestkelly/aho-corasick/issues) for a 
 <!-- CONTRIBUTING -->
 
 ## Contributing
+
+Use Node 24 and the pnpm version pinned in `package.json` for development:
+
+```sh
+pnpm install --frozen-lockfile
+pnpm validate
+```
+
+Validation runs the unit tests, builds and packs the library, then installs the
+tarball in a temporary TypeScript project and runs a search through the public import.
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
