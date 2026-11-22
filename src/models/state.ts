@@ -12,7 +12,8 @@
 export class State {
   private _fail: State | null = null;
   private readonly _depth: number;
-  private readonly _match: string[] = [];
+  private readonly keywords: string[] = [];
+  private _match = this.keywords;
   private readonly _success: Map<string, State> = new Map();
 
   /**
@@ -41,6 +42,9 @@ export class State {
    */
   set failure(s: State | null) {
     this._fail = s;
+    this._match = s && s !== this && s.match.length
+      ? this.keywords.concat(s.match)
+      : this.keywords;
   }
 
   /**
@@ -82,7 +86,7 @@ export class State {
    * @param {string[]} keywords - An array of strings representing keywords to be added.
    */
   addMatch(keywords: string[]): void {
-    this._match.push(...keywords);
+    this.keywords.push(...keywords);
   }
 
   /**

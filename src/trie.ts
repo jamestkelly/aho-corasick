@@ -35,7 +35,7 @@ export class Trie {
     this.options = { ...defaultTrieOptions, ...options };
 
     if (keywords && isNonEmptyArray(keywords)) {
-      this.initialiseKeywords(keywords);
+      keywords.forEach((keyword) => this.addKeyword(keyword));
     }
   }
 
@@ -53,7 +53,8 @@ export class Trie {
     }
 
     let currentState = this.root;
-    const kw = this.prepareKeywordForInsertion(keyword);
+    const cased = this.options.caseSensitive ? keyword : keyword.toLowerCase();
+    const kw = this.options.removeWhiteSpaces ? cased.trim() : cased;
 
     for (let i = 0; i < kw.length; i++) {
       const char = kw.charAt(i);
@@ -61,6 +62,7 @@ export class Trie {
     }
 
     currentState.addMatch([kw]);
+    this.failureStateConstructed = false;
   }
 
   /**
@@ -111,7 +113,7 @@ export class Trie {
       if (currentIndex < match.start) {
         nonMatches.push(text.slice(currentIndex, match.start));
       }
-      currentIndex = match.end + 1;
+      currentIndex = Math.max(currentIndex, match.end + 1);
     }
 
     if (currentIndex < text.length) {
@@ -145,49 +147,6 @@ export class Trie {
     );
 
     return wordCounts;
-  }
-
-  /**
-   * @description
-   * Initializes the Trie with an array of keywords. These keywords are parsed respective
-   * to the provided options `caseSensitive` and `removeWhiteSpaces` where strings are
-   * flipped to lower case when the former is `true` and white spaces are trimmed when the
-   * latter is `true`.
-   *
-   * @param {Array<string>} keywords - An array of keywords to add to the Trie.
-   * @private
-   * @returns {void}
-   */
-  private initialiseKeywords(keywords: Array<string>): void {
-    const caseTransform = this.options.caseSensitive
-      ? (x: string) => x
-      : (x: string) => x.toLowerCase();
-
-    const trimWhiteSpace = this.options.removeWhiteSpaces
-      ? (x: string) => x
-      : (x: string) => x.trim();
-
-    keywords.forEach((kw) =>
-      this.addKeyword(trimWhiteSpace(caseTransform(kw)))
-    );
-  }
-
-  /**
-   * @description
-   * Prepares a keyword for insertion into the Trie based on the specified options.
-   *
-   * @param {string} keyword - The original keyword to prepare.
-   * @private
-   * @returns {string} The prepared keyword.
-   */
-  private prepareKeywordForInsertion(keyword: string): string {
-    const transformCase = (x: string): string =>
-      this.options.caseSensitive ? x : x.toLowerCase();
-
-    const trimWhitespace = (x: string): string =>
-      this.options.removeWhiteSpaces ? x.trim() : x;
-
-    return trimWhitespace(trimWhitespace(transformCase(keyword)));
   }
 
   /**
@@ -280,7 +239,6 @@ export class Trie {
 
         const newFailureState = traceFailureState.nextState(transition)!;
         targetState.failure = newFailureState;
-        targetState.addMatch(newFailureState.match);
       });
     }
 
