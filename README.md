@@ -41,6 +41,15 @@ while editing the matcher. `pnpm bench` reports local medians for build, scan,
 count, and overlap workloads. The library ships CommonJS JavaScript using ES2015
 syntax; Node 24 is the development toolchain rather than a consumer requirement.
 
+## Releases
+
+After a squash merge to `main`, CI validates the library and semantic-release
+uses conventional commits to publish npm versions and GitHub release notes.
+CI then installs the exact version from npm and checks a TypeScript consumer.
+Before enabling publishing, configure the npm trusted publisher for
+`@jimtkelly/aho-corasick`: GitHub owner `jamestkelly`, repository `aho-corasick`,
+workflow `release.yml`, no environment. The release uses OIDC, not an npm token.
+
 ## Credits and license
 
 Based on [Aho and Corasick's algorithm](https://doi.org/10.1145/360825.360855)
