@@ -1,22 +1,18 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2015",
     "module": "commonjs",
-    "lib": ["es2023"],
+    "lib": ["es2015"],
     "declaration": true,
     "outDir": "./dist",
 
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
 
     "esModuleInterop": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["src/**/*.test.ts"]
+  "include": ["src/**/*.ts"]
 }
