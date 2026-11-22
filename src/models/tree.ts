@@ -25,34 +25,20 @@ export class Tree {
    * @returns {Array<T>} An array of segments without overlapping segments.
    */
   removeOverlappingSegments<T extends Segment>(segments: Array<T>): Array<T> {
-    const removed: Array<Segment> = new Array<Segment>();
+    const removed = new Set<Segment>();
     const sortedSegments = segments.slice().sort((a, b) => b.size() - a.size());
 
     for (const segment of sortedSegments) {
-      if (!this.hasSegment(removed, segment)) {
-        removed.push(
-          ...this.root
-            .getOverlappingSegments(segment)
-            .filter((o) => !this.hasSegment(removed, o))
-        );
+      if (!removed.has(segment)) {
+        for (const overlap of this.root.getOverlappingSegments(segment)) {
+          removed.add(overlap);
+        }
       }
     }
 
     return segments
       .slice()
       .sort((a, b) => a.start - b.start)
-      .filter((s) => !this.hasSegment(removed, s));
-  }
-
-  /**
-   * @description
-   * Checks if a segment is present in the array of segments.
-   *
-   * @param {Array<Segment>} segments An array of segments to check against.
-   * @param {Segment} s The segment to check for.
-   * @returns {boolean} True if the segment is present, false otherwise.
-   */
-  private hasSegment(segments: Array<Segment>, s: Segment): boolean {
-    return segments.some((n) => n.isEqual(s));
+      .filter((s) => !removed.has(s));
   }
 }
