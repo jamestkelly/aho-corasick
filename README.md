@@ -193,6 +193,16 @@ pnpm validate
 Validation runs the unit tests, builds and packs the library, then installs the
 tarball in a temporary TypeScript project and runs a search through the public import.
 
+Pull requests need a conventional title (for example, `fix: preserve keyword spaces`)
+and a branch such as `fix/keyword-spaces`. Squash merges to `main` rerun validation;
+semantic-release uses the commit history to version and publish the npm package and
+GitHub release. A tagged release is checked with a clean install from npm.
+
+Before merging the release workflow for the first time, configure a GitHub Actions
+trusted publisher in npm's settings for `@jimtkelly/aho-corasick`: owner `jamestkelly`,
+repository `aho-corasick`, workflow `release.yml`, no environment. Publishing uses
+OIDC rather than an npm token.
+
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
