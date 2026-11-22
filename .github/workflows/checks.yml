@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   validate:
-    name: Validate Library and Release Tooling
+    name: Validate Library
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
@@ -20,13 +20,6 @@ jobs:
           node-version-file: .node-version
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Check Release Configuration
-        run: |
-          node --input-type=module <<'JS'
-          import { readFileSync } from 'node:fs';
-          const { plugins } = JSON.parse(readFileSync('.releaserc.json', 'utf8'));
-          for (const [name] of plugins) await import(name);
-          JS
       - run: pnpm validate
   branch-name:
     name: Validate Source Branch

@@ -5,17 +5,10 @@ import { join } from 'node:path';
 
 const cwd = mkdtempSync(join(tmpdir(), 'aho-consumer-'));
 try {
-  const version = process.argv[2];
-  let installArgs;
-  if (version) {
-    installArgs = ['--registry=https://registry.npmjs.org', `@jimtkelly/aho-corasick@${version}`];
-  } else {
-    execFileSync('npm', ['pack', '--pack-destination', cwd], { stdio: 'inherit' });
-    const [tarball] = readdirSync(cwd);
-    installArgs = ['--offline', `./${tarball}`];
-  }
+  execFileSync('npm', ['pack', '--pack-destination', cwd], { stdio: 'inherit' });
+  const [tarball] = readdirSync(cwd);
   writeFileSync(join(cwd, 'package.json'), '{"private":true}');
-  execFileSync('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', ...installArgs], { cwd, stdio: 'inherit' });
+  execFileSync('npm', ['install', '--offline', '--ignore-scripts', '--no-audit', '--no-fund', `./${tarball}`], { cwd, stdio: 'inherit' });
   writeFileSync(join(cwd, 'consumer.ts'), `
     import { Trie, type Match } from '@jimtkelly/aho-corasick';
     const matches: Match[] = new Trie(['he']).getMatches('she');
