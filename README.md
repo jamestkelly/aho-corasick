@@ -8,11 +8,30 @@ to return match positions and occurrence counts with zero runtime dependencies.
 npm install @jimtkelly/aho-corasick
 ```
 
+## Find all overlapping keywords and their positions in TypeScript
+
+Use a trie when you search many documents with the same list of literal keywords.
+In the [benchmark below](#when-should-i-use-this), a loop over `indexOf` was faster
+for four keywords, but the trie was faster scanning prose with a reused dictionary
+of 1,024 keywords.
+
 ```ts
 import { Trie } from '@jimtkelly/aho-corasick';
 
+const products = new Trie(['cold brew', 'brew']);
+const review = '🧊 Cold Brew!';
+for (const { start, end } of products.getMatches(review)) {
+  // Both offsets are inclusive UTF-16 indices in the original review.
+  console.log(start, end, review.slice(start, end + 1));
+}
+// 3 11 Cold Brew
+// 8 11 Brew
+```
+
+### Other operations
+
+```ts
 const trie = new Trie(['she', 'he']);
-trie.getMatches('She!');           // she [0, 2], he [1, 2]
 trie.getNonMatches('She!');        // ['!']
 trie.getStringOccurrences('he');   // [{ keyword: 'he', occurrences: 1 }]
 trie.hasMatch('she said hello');   // true; stops at the first qualifying match
