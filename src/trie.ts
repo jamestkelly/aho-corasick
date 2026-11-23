@@ -56,8 +56,9 @@ export class Trie {
     const cased = this.options.caseSensitive ? keyword : keyword.toLowerCase();
     const kw = this.options.removeWhiteSpaces ? cased.trim() : cased;
 
-    for (let i = 0; i < kw.length; i++) {
-      const char = kw.charAt(i);
+    const key = this.options.caseSensitive ? kw : kw.replace(/ς/g, 'σ');
+    for (let i = 0; i < key.length; i++) {
+      const char = key.charAt(i);
       currentState = currentState.addState(char);
     }
 
@@ -90,19 +91,36 @@ export class Trie {
     this.checkForConstructedFailureStates();
     let currentState: State = this.root;
 
-    for (let pos = 0; pos < text.length; pos++) {
-      const char = this.options.caseSensitive
-        ? text.charAt(pos)
-        : text.charAt(pos).toLowerCase();
-      currentState = this.getState(currentState, char);
+    const input = this.options.caseSensitive
+      ? text
+      : text.toLowerCase().replace(/ς/g, 'σ');
+    // A lowercase expansion (e.g. İ → i̇) has no original boundary inside it.
+    let boundaries: number[] | undefined;
+    if (input.length !== text.length) {
+      boundaries = [0];
+      let folded = 0;
+      for (let i = 0; i < text.length;) {
+        const point = String.fromCodePoint(text.codePointAt(i)!);
+        const width = point.toLowerCase().length;
+        if (point.length === 2 && width === 2) boundaries[folded + 1] = i + 1;
+        folded += width;
+        i += point.length;
+        boundaries[folded] = i;
+      }
+    }
+    for (let pos = 0; pos < input.length; pos++) {
+      currentState = this.getState(currentState, input.charAt(pos));
       for (const keyword of currentState.match) {
-        const start = pos - keyword.length + 1;
+        const from = pos - keyword.length + 1;
+        const start = boundaries ? boundaries[from] : from;
+        const after = boundaries ? boundaries[pos + 1] : pos + 1;
+        if (start === undefined || after === undefined) continue;
         if (
           !this.options.wholeWords ||
           (!isAlphanumeric(text.charAt(start - 1)) &&
-            !isAlphanumeric(text.charAt(pos + 1)))
+            !isAlphanumeric(text.charAt(after)))
         ) {
-          emit(start, pos, keyword);
+          emit(start, after - 1, keyword);
         }
       }
     }

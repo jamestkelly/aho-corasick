@@ -1,6 +1,23 @@
 import { expect, test } from 'vitest';
 import { Trie, Match, defaultTrieOptions } from '../src/trie';
 
+test('Unicode casing preserves original UTF-16 spans and whole source characters', () => {
+  const trie = new Trie(['İ', 'ΟΣ', '𐐀', 'i', 'x']);
+  expect(trie.getMatches('İΟσ𐐨X')).toStrictEqual([
+    new Match(0, 0, 'i\u0307'),
+    new Match(1, 2, 'ος'),
+    new Match(3, 4, '𐐨'),
+    new Match(5, 5, 'x')
+  ]);
+  expect(trie.getNonMatches('!İΟΣ?')).toStrictEqual(['!', '?']);
+  expect(
+    new Trie(['İ'], { caseSensitive: true }).getMatches('i\u0307')
+  ).toStrictEqual([]);
+  expect(
+    new Trie(['İ'], { wholeWords: true }).getMatches('xİ İ!')
+  ).toStrictEqual([new Match(3, 3, 'i\u0307')]);
+});
+
 test('mutable dictionary rebuilds suffix outputs without accumulating them', () => {
   const trie = new Trie(['she', 'he']);
   const words = () => trie.getMatches('shex').map((m) => m.keyword);
