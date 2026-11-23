@@ -33,6 +33,20 @@ for (const review of ['Cold brew on tap', 'Espresso, espresso!']) {
 // [{ keyword: 'espresso', occurrences: 2 }]
 ```
 
+For a reproducible comparison, run `pnpm build && node scripts/compare-search.cjs`.
+Both methods return identical overlapping counts. On Node 24.21 (macOS arm64),
+these were median milliseconds across nine runs of a reused, case-sensitive dictionary:
+
+| Keywords | Text | Build trie | Scan with trie | Loop over `indexOf` |
+|---:|---|---:|---:|---:|
+| 4 | Repeated prose | 0.005 | 0.488 | 0.065 |
+| 4 | Dense repeats | 0.003 | 0.334 | 0.207 |
+| 1,024 | Repeated prose | 0.340 | 0.262 | 6.519 |
+| 1,024 | Dense repeats | 0.243 | 0.404 | 0.435 |
+
+The small dictionary favored `indexOf`; the biggest difference was scanning prose
+with many absent keywords. Benchmark your own dictionary before choosing.
+
 The supported import is the package root (CommonJS `require` also works).
 `Match.start` and `Match.end` are **inclusive UTF-16 indices in the original text**:
 use `text.slice(match.start, match.end + 1)`. `match.size()` is the span length;
