@@ -51,11 +51,15 @@ export class Trie {
       : new Tree(matches).removeOverlappingSegments(matches);
   }
 
+  hasMatch(text: string): boolean {
+    return this.scan(text);
+  }
+
   private scan(
     text: string,
-    emit: (start: number, end: number, keyword: string) => void
-  ): void {
-    if (!text) return;
+    emit?: (start: number, end: number, keyword: string) => void
+  ): boolean {
+    if (!text) return false;
     if (!this.failureStateConstructed) this.constructFailureStates();
     let currentState: State = this.root;
 
@@ -88,10 +92,12 @@ export class Trie {
           (!wordChar.test(text.charAt(start - 1)) &&
             !wordChar.test(text.charAt(after)))
         ) {
+          if (!emit) return true;
           emit(start, after - 1, keyword);
         }
       }
     }
+    return false;
   }
 
   getNonMatches(text: string): Array<string> {
