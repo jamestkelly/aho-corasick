@@ -73,24 +73,39 @@ export class Trie {
    * @returns {Array<Match>} - An array of Match objects representing keyword matches.
    */
   getMatches(text: string): Array<Match> {
+    const matches: Match[] = [];
+    this.scan(text, (start, end, keyword) =>
+      matches.push(new Match(start, end, keyword))
+    );
+    return this.options.allowOverlap
+      ? matches
+      : new Tree(matches).removeOverlappingSegments(matches);
+  }
+
+  private scan(
+    text: string,
+    emit: (start: number, end: number, keyword: string) => void
+  ): void {
+    if (isNullOrEmptyString(text)) return;
     this.checkForConstructedFailureStates();
     let currentState: State = this.root;
-    const matches: Array<Match> = [];
 
-    if (isNullOrEmptyString(text)) {
-      return matches;
-    }
-
-    for (let pos = 0; pos <= text.length; pos++) {
+    for (let pos = 0; pos < text.length; pos++) {
       const char = this.options.caseSensitive
         ? text.charAt(pos)
         : text.charAt(pos).toLowerCase();
       currentState = this.getState(currentState, char);
-      matches.push(...this.toMatches(pos, currentState));
+      for (const keyword of currentState.match) {
+        const start = pos - keyword.length + 1;
+        if (
+          !this.options.wholeWords ||
+          (!isAlphanumeric(text.charAt(start - 1)) &&
+            !isAlphanumeric(text.charAt(pos + 1)))
+        ) {
+          emit(start, pos, keyword);
+        }
+      }
     }
-
-    const filteredMatches = this.applyFilteringOptions(text, matches);
-    return filteredMatches;
   }
 
   /**
@@ -101,7 +116,6 @@ export class Trie {
    * @returns {Array<string>} An array of non-matching substrings.
    */
   getNonMatches(text: string): Array<string> {
-    this.checkForConstructedFailureStates();
     const matches: Array<Match> = this.getMatches(text);
 
     matches.sort((a, b) => a.start - b.start);
@@ -132,14 +146,15 @@ export class Trie {
    * @returns {Array<WordCount>} An array of WordCount objects.
    */
   getStringOccurrences(text: string): Array<WordCount> {
-    this.checkForConstructedFailureStates();
-    const matches: Array<Match> = this.getMatches(text);
     const wordCountMap = new Map<string, number>();
-
-    for (const match of matches) {
-      const keyword = match.keyword;
+    const countKeyword = (keyword: string) => {
       const count = wordCountMap.get(keyword) || 0;
       wordCountMap.set(keyword, count + 1);
+    };
+    if (this.options.allowOverlap) {
+      this.scan(text, (_, __, keyword) => countKeyword(keyword));
+    } else {
+      for (const match of this.getMatches(text)) countKeyword(match.keyword);
     }
 
     const wordCounts: Array<WordCount> = Array.from(wordCountMap.entries()).map(
@@ -147,32 +162,6 @@ export class Trie {
     );
 
     return wordCounts;
-  }
-
-  /**
-   * @description
-   * Applies filtering options to the list of matches.
-   *
-   * @param {string} text - The input text.
-   * @param {Array<Match>} matches - The list of matches.
-   * @returns {Array<Match>} The filtered list of matches.
-   * @private
-   */
-  private applyFilteringOptions(
-    text: string,
-    matches: Array<Match>
-  ): Array<Match> {
-    const partialMatchesRemoved = this.options.wholeWords
-      ? this.removePartialMatches(text, matches)
-      : matches;
-
-    const overlapsFiltered = !this.options.allowOverlap
-      ? new Tree(partialMatchesRemoved).removeOverlappingSegments(
-          partialMatchesRemoved
-        )
-      : partialMatchesRemoved;
-
-    return overlapsFiltered;
   }
 
   /**
@@ -225,8 +214,8 @@ export class Trie {
       queue.push(depthOneState);
     });
 
-    while (queue.length > 0) {
-      const currentState: State = queue.shift()!;
+    for (let head = 0; head < queue.length; head++) {
+      const currentState = queue[head];
 
       currentState.transitions.forEach((transition) => {
         const targetState: State = currentState.nextState(transition)!;
@@ -243,41 +232,6 @@ export class Trie {
     }
 
     this.failureStateConstructed = true;
-  }
-
-  /**
-   * @description
-   * Removes partial matches from the list of emits based on the search text.
-   *
-   * @param {string} text - The search text.
-   * @param {Match[]} matches - The list of emitted matches.
-   * @private
-   * @returns {Match[]} The filtered list of matches.
-   */
-  private removePartialMatches(text: string, matches: Match[]): Match[] {
-    const start = text.length;
-    return matches.filter((match) => {
-      return (
-        (match.start === 0 || !isAlphanumeric(text.charAt(match.start - 1))) &&
-        (match.end + 1 == start || !isAlphanumeric(text.charAt(match.end + 1)))
-      );
-    });
-  }
-
-  /**
-   * @description
-   * Converts Trie matches to Match objects.
-   *
-   * @param {number} end - The end index of the match.
-   * @param {State} state - The current state in the Trie.
-   * @private
-   * @returns {Match[]} The list of Match objects.
-   */
-  private toMatches(end: number, state: State): Match[] {
-    const matches: string[] = state.match;
-    return matches.map((match) => {
-      return new Match(end - match.length + 1, end, match);
-    });
   }
 }
 
