@@ -82,18 +82,25 @@ export class Trie {
     }
     for (let pos = 0; pos < input.length; pos++) {
       currentState = this.getState(currentState, input.charAt(pos));
-      for (const keyword of currentState.matches) {
-        const from = pos - keyword.length + 1;
-        const start = boundaries ? boundaries[from] : from;
-        const after = boundaries ? boundaries[pos + 1] : pos + 1;
-        if (start === undefined || after === undefined) continue;
-        if (
-          !this.options.wholeWords ||
-          (!wordChar.test(text.charAt(start - 1)) &&
-            !wordChar.test(text.charAt(after)))
-        ) {
-          if (!emit) return true;
-          emit(start, after - 1, keyword);
+      if (!currentState.matches.length) continue;
+      for (
+        let state: State | undefined = currentState;
+        state;
+        state = state.output
+      ) {
+        for (const keyword of state.matches) {
+          const from = pos - keyword.length + 1;
+          const start = boundaries ? boundaries[from] : from;
+          const after = boundaries ? boundaries[pos + 1] : pos + 1;
+          if (start === undefined || after === undefined) continue;
+          if (
+            !this.options.wholeWords ||
+            (!wordChar.test(text.charAt(start - 1)) &&
+              !wordChar.test(text.charAt(after)))
+          ) {
+            if (!emit) return true;
+            emit(start, after - 1, keyword);
+          }
         }
       }
     }

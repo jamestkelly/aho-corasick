@@ -1,6 +1,29 @@
 import { expect, test } from 'vitest';
 import { Trie, Match, defaultTrieOptions } from '../src/trie';
 
+test('long suffix chains preserve duplicates and order after rebuilding', () => {
+  const keys = Array.from({ length: 70 }, (_, i) => 'a'.repeat(i + 1));
+  const trie = new Trie(keys);
+  const text = 'a'.repeat(70);
+  const ending = () =>
+    trie
+      .getMatches(text)
+      .filter((m) => m.end === 69)
+      .map((m) => m.keyword);
+  expect(ending()).toEqual(keys.slice().reverse());
+  trie.addKeyword(keys[32]);
+  expect(ending()).toEqual(
+    [...keys, keys[32]].sort((a, b) => b.length - a.length)
+  );
+  const inherited = new Trie([...keys, 'b' + text + '!']);
+  expect(
+    inherited
+      .getMatches('b' + text)
+      .filter((m) => m.end === 70)
+      .map((m) => m.keyword)
+  ).toEqual(keys.slice().reverse());
+});
+
 test('hasMatch agrees with filtered matches across options and updates', () => {
   for (const wholeWords of [false, true]) {
     for (const allowOverlap of [false, true]) {
