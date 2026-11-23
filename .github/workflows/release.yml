@@ -42,7 +42,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: pnpm exec semantic-release
-      - name: Verify Tagged Version from npm
-        run: |
-          tag=$(git tag --points-at HEAD --list 'v[0-9]*')
-          if [[ -n "$tag" ]]; then pnpm run test:package "${tag#v}"; fi

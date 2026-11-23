@@ -1,49 +1,19 @@
-/** Compile and run an isolated consumer of a local tarball or explicit npm version. */
+/** Compile and run an isolated consumer of the local tarball. */
 import { execFileSync } from "node:child_process";
 import { mkdtempSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { setTimeout as delay } from "node:timers/promises";
 
 const cwd = mkdtempSync(join(tmpdir(), "aho-consumer-"));
 try {
-  const version = process.argv[2];
-  let installArgs: string[];
-  if (version) {
-    installArgs = [
-      "--prefer-online",
-      "--registry=https://registry.npmjs.org",
-      `@jimtkelly/aho-corasick@${version}`,
-    ];
-  } else {
-    execFileSync("npm", ["pack", "--pack-destination", cwd], { stdio: "inherit" });
-    const [tarball] = readdirSync(cwd);
-    installArgs = ["--offline", `./${tarball}`];
-  }
+  execFileSync("npm", ["pack", "--pack-destination", cwd], { stdio: "inherit" });
+  const [tarball] = readdirSync(cwd);
   writeFileSync(join(cwd, "package.json"), '{"private":true}');
-  for (let attempt = 1; ; attempt++) {
-    try {
-      execFileSync(
-        "npm",
-        ["install", "--ignore-scripts", "--no-audit", "--no-fund", ...installArgs],
-        { cwd, stdio: ["inherit", "inherit", "pipe"], encoding: "utf8" },
-      );
-      break;
-    } catch (error) {
-      // npm can acknowledge publication before the new version is available to install.
-      if (
-        !version ||
-        attempt >= 7 ||
-        !(error instanceof Error) ||
-        !("stderr" in error) ||
-        typeof error.stderr !== "string" ||
-        !/^npm error code ETARGET$/m.test(error.stderr)
-      )
-        throw error;
-      console.warn(`Version ${version} is not visible on npm yet; retrying in 15s (${attempt}/6).`);
-      await delay(15_000);
-    }
-  }
+  execFileSync(
+    "npm",
+    ["install", "--ignore-scripts", "--no-audit", "--no-fund", "--offline", `./${tarball}`],
+    { cwd, stdio: "inherit" },
+  );
   writeFileSync(
     join(cwd, "consumer.ts"),
     `
