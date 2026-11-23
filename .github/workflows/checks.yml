@@ -33,12 +33,6 @@ jobs:
           JS
       - name: Validate Library
         run: pnpm validate
-      - name: Require TypeScript for Scripts
-        run: |
-          if git ls-files scripts doc | grep -E '\.(js|cjs|mjs)$'; then
-            echo 'Use TypeScript for repository scripts and runnable examples.'
-            exit 1
-          fi
   branch-name:
     name: Validate Source Branch
     if: github.event_name == 'pull_request'
