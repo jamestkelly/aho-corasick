@@ -1,11 +1,13 @@
 import { Segment } from './segment';
 
+/** Centered interval-tree node: local spans cross the midpoint, children lie to either side. */
 export class Node {
   private midPoint: number;
   private segments: Array<Segment> = new Array<Segment>();
   private left: Node | null = null;
   private right: Node | null = null;
 
+  /** Partition spans by position without splitting spans that cover the midpoint. */
   constructor(segments: Array<Segment>) {
     this.midPoint = this.getMidPoint(segments);
     const paths: Array<Array<Segment>> = [
@@ -28,6 +30,7 @@ export class Node {
     }
   }
 
+  /** Find intersecting spans, excluding all spans with exactly the query endpoints. */
   getOverlappingSegments(s: Segment): Array<Segment> {
     if (this.midPoint < s.start) {
       // Overlapping segments in the right subtree and self
@@ -53,6 +56,7 @@ export class Node {
     }
   }
 
+  /** Bisect the range from the earliest start to the latest end. */
   private getMidPoint(segments: Array<Segment>): number {
     const points = [-1, -1];
 

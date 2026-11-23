@@ -3,17 +3,20 @@ import { Match } from './match';
 import { Tree } from './overlaps';
 import { State } from './state';
 
+/** Number of accepted matches for one stored keyword. */
 export interface WordCount {
   keyword: string;
   occurrences: number;
 }
 const wordChar = /[a-zA-Z0-9]/;
 
+/** Reusable Aho–Corasick matcher for a dictionary of literal keywords. */
 export class Trie {
   private failureStateConstructed: boolean = false;
   private readonly root: State = new State();
   private readonly options: TrieOptions;
 
+  /** Insert the initial dictionary; failure links are built on the first nonempty search. */
   constructor(keywords?: Array<string>, options?: Partial<TrieOptions>) {
     this.options = { ...defaultTrieOptions, ...options };
 
@@ -22,6 +25,10 @@ export class Trie {
     }
   }
 
+  /**
+   * Insert a literal, retaining duplicates, and invalidate the compiled failure links.
+   * @throws If the keyword is null, empty, or whitespace-only.
+   */
   addKeyword(keyword: string): void {
     if (keyword == null || keyword.trim() === '') {
       throw new Error('Provided string `keyword` is a null or empty string.');
@@ -41,6 +48,10 @@ export class Trie {
     this.failureStateConstructed = false;
   }
 
+  /**
+   * Return inclusive UTF-16 spans in the original text. Overlaps are emitted by
+   * end position, longest suffix first; with overlaps disabled, results are in start order.
+   */
   getMatches(text: string): Array<Match> {
     const matches: Match[] = [];
     this.scan(text, (start, end, keyword) =>
@@ -51,10 +62,12 @@ export class Trie {
       : new Tree(matches).removeOverlappingSegments(matches);
   }
 
+  /** Stop at the first qualifying occurrence without allocating a match list. */
   hasMatch(text: string): boolean {
     return this.scan(text);
   }
 
+  /** Emit all candidate spans; without an emitter, return true on the first hit. */
   private scan(
     text: string,
     emit?: (start: number, end: number, keyword: string) => void
@@ -107,6 +120,7 @@ export class Trie {
     return false;
   }
 
+  /** Return the nonempty gaps between accepted spans, preserving original text and order. */
   getNonMatches(text: string): Array<string> {
     const matches: Array<Match> = this.getMatches(text);
 
@@ -129,8 +143,10 @@ export class Trie {
     return nonMatches;
   }
 
+  /** Count accepted matches by stored keyword in first-result order, omitting misses. */
   getStringOccurrences(text: string): Array<WordCount> {
     const wordCountMap = new Map<string, number>();
+    /** Share the same accumulator for streamed and overlap-filtered results. */
     const countKeyword = (keyword: string) => {
       const count = wordCountMap.get(keyword) || 0;
       wordCountMap.set(keyword, count + 1);
@@ -148,6 +164,7 @@ export class Trie {
     return wordCounts;
   }
 
+  /** Follow suffix links until a transition exists, falling back to the root on a miss. */
   private getState(currentState: State, char: string): State {
     let next = currentState.next.get(char);
     while (!next && currentState !== this.root) {
@@ -157,6 +174,7 @@ export class Trie {
     return next ?? this.root;
   }
 
+  /** Link states breadth-first so every shorter suffix has its outputs ready first. */
   private constructFailureStates(): void {
     const queue = Array.from(this.root.next.values());
     for (const child of queue) child.link(this.root);

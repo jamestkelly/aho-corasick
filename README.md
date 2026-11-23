@@ -53,7 +53,7 @@ for (const review of ['Cold brew on tap', 'Espresso, espresso!']) {
 // [{ keyword: 'espresso', occurrences: 2 }]
 ```
 
-For a reproducible comparison, run `pnpm build && node scripts/compare-search.cjs`.
+For a reproducible comparison, run `pnpm build && node scripts/compare-search.mts`.
 Both methods return identical overlapping counts. On Node 24.21 (macOS arm64),
 these were median milliseconds across nine runs of a reused, case-sensitive dictionary:
 
@@ -81,12 +81,12 @@ use `text.slice(match.start, match.end + 1)`. `match.size()` is the span length;
 
 Repeated keyword insertions produce repeated matches, even for identical spans with
 overlap disabled. Counts reflect the same filtered matches, in first-result order.
-See the [runnable example on GitHub](https://github.com/jamestkelly/aho-corasick/blob/main/doc/example.cjs).
+See the [runnable example on GitHub](https://github.com/jamestkelly/aho-corasick/blob/main/doc/example.mts).
 
 ## Development
 
 Use Node 24 and the pnpm version pinned in `package.json`. Run
-`pnpm install --frozen-lockfile`, then `pnpm validate` to type-check the tests,
+`pnpm install --frozen-lockfile`, then `pnpm validate` to type-check the library, scripts and tests,
 run Vitest, and test a clean TypeScript consumer install. Use `pnpm test:watch`
 while editing the matcher. `pnpm bench` reports local medians for build, scan,
 count, and overlap workloads. The library ships CommonJS JavaScript using ES2015

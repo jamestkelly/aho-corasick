@@ -1,8 +1,10 @@
-const assert = require('node:assert/strict');
-const { performance } = require('node:perf_hooks');
-const { Trie } = require('..');
+/** Compare equivalent overlapping counts with and without a compiled dictionary. */
+import assert from 'node:assert/strict';
+import { performance } from 'node:perf_hooks';
+import { Trie } from '../dist/trie.js';
 
-function median(run) {
+/** Warm once, then report the median of nine samples in milliseconds. */
+function median(run: () => unknown) {
   run();
   const times = Array.from({ length: 9 }, () => {
     const start = performance.now();
@@ -12,8 +14,8 @@ function median(run) {
   return times.sort((a, b) => a - b)[4].toFixed(3);
 }
 
-// Report counts in dictionary order for both methods. Include overlapping hits.
-function byIndex(keys, text) {
+/** Count overlapping occurrences per key in dictionary order for the reference result. */
+function byIndex(keys: string[], text: string) {
   return keys.map(key => {
     let count = 0;
     for (let at = text.indexOf(key); at !== -1; at = text.indexOf(key, at + 1)) count++;
@@ -28,12 +30,14 @@ for (const size of [4, 1024]) {
     ['prose', 'One espresso and a cold brew at the station. '.repeat(500)],
     ['dense', 'a'.repeat(12000)]
   ]) {
+    /** Include lazy failure-link construction in build time. */
     const build = () => {
       const trie = new Trie(keys, { caseSensitive: true });
       trie.getMatches('!'); // Compilation is lazy.
       return trie;
     };
     const trie = build();
+    /** Include missing keywords as zero counts, matching the reference result. */
     const scan = () => {
       const counts = new Map(trie.getStringOccurrences(text).map(x => [x.keyword, x.occurrences]));
       return keys.map(key => counts.get(key) ?? 0);
