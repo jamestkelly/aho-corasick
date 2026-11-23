@@ -1,0 +1,5 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "Aho-Corasick: Multi-Keyword Search for TypeScript and JavaScript",
+  "description": "Find all occurrences of multiple keywords in a string in one pass, including overlapping matches. @jimtkelly/aho-corasick returns start and end positions in the original text and can count occurrences of each keyword."
+}
