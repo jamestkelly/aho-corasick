@@ -1,6 +1,8 @@
 # @jimtkelly/aho-corasick
 
-Search text for many keywords in one pass with an [Aho–Corasick automaton](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm). The package includes TypeScript declarations and has no runtime dependencies.
+Find many literal keywords in a string in one pass. This JavaScript and TypeScript
+library uses [Aho–Corasick](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm)
+to return match positions and occurrence counts with zero runtime dependencies.
 
 ```sh
 npm install @jimtkelly/aho-corasick
@@ -14,6 +16,21 @@ trie.getMatches('She!');           // she [0, 2], he [1, 2]
 trie.getNonMatches('She!');        // ['!']
 trie.getStringOccurrences('he');   // [{ keyword: 'he', occurrences: 1 }]
 trie.addKeyword('hers');           // the next search rebuilds the failure links
+```
+
+## When should I use this?
+
+Use `String.includes` for one or two literals and regular expressions for patterns.
+Use a trie when you repeatedly search documents for a dictionary of fixed terms and
+need all matches, including overlaps. Build the dictionary once and reuse it:
+
+```ts
+const products = new Trie(['espresso', 'cold brew'], { wholeWords: true });
+for (const review of ['Cold brew on tap', 'Espresso, espresso!']) {
+  console.log(products.getStringOccurrences(review));
+}
+// [{ keyword: 'cold brew', occurrences: 1 }]
+// [{ keyword: 'espresso', occurrences: 2 }]
 ```
 
 The supported import is the package root (CommonJS `require` also works).
@@ -30,7 +47,7 @@ use `text.slice(match.start, match.end + 1)`. `match.size()` is the span length;
 
 Repeated keyword insertions produce repeated matches, even for identical spans with
 overlap disabled. Counts reflect the same filtered matches, in first-result order.
-See the [runnable example](doc/example.cjs).
+See the [runnable example on GitHub](https://github.com/jamestkelly/aho-corasick/blob/main/doc/example.cjs).
 
 ## Development
 

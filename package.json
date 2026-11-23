@@ -1,7 +1,7 @@
 {
   "name": "@jimtkelly/aho-corasick",
   "version": "1.0.1",
-  "description": "An implementation of the Aho-Corasick algorithm in TypeScript.",
+  "description": "Find many literal keywords in a string in one pass. Aho–Corasick for JavaScript and TypeScript, with match positions, occurrence counts, and zero runtime dependencies.",
   "main": "./dist/trie.js",
   "types": "./dist/trie.d.ts",
   "files": [
@@ -24,13 +24,13 @@
     "url": "git+https://github.com/jamestkelly/aho-corasick.git"
   },
   "keywords": [
-    "Aho-Corasick",
-    "TypeScript",
-    "trie",
-    "string matching",
     "aho-corasick",
-    "search",
-    "match"
+    "multi-pattern-search",
+    "string-matching",
+    "keyword-extraction",
+    "trie",
+    "typescript",
+    "javascript"
   ],
   "author": "Jim Kelly",
   "license": "MIT",
