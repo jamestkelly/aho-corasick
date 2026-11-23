@@ -1,7 +1,7 @@
 export class State {
   readonly next = new Map<string, State>();
   readonly keywords: string[] = [];
-  matches = this.keywords;
+  output?: State;
   failure: State = this;
 
   add(char: string): State {
@@ -12,8 +12,6 @@ export class State {
 
   link(failure: State): void {
     this.failure = failure;
-    this.matches = failure.matches.length
-      ? this.keywords.concat(failure.matches)
-      : this.keywords;
+    this.output = failure.keywords.length ? failure : failure.output;
   }
 }
