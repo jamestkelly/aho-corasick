@@ -2,7 +2,7 @@
 export class Segment {
   constructor(
     readonly start: number,
-    readonly end: number
+    readonly end: number,
   ) {}
 
   /** Compare endpoints only; keyword identity is irrelevant. */

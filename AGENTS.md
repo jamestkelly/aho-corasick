@@ -1,5 +1,6 @@
 # Working on the matcher
 
+- Run `pnpm format` to apply the repository's Prettier style or `pnpm format:check` to verify it.
 - Use the Node version in `.node-version` and the pnpm version in `package.json`.
   Install with `pnpm install --frozen-lockfile`; run `pnpm validate` before opening a PR.
   Validation builds the library, checks the tests and scripts, and installs the actual

@@ -1,5 +1,5 @@
-import { Node } from './interval-node';
-import { Segment } from './segment';
+import { Node } from "./interval-node";
+import { Segment } from "./segment";
 
 /** Interval index for resolving competing match spans. */
 export class Tree {

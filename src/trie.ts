@@ -1,7 +1,7 @@
-import { defaultTrieOptions, TrieOptions } from './options';
-import { Match } from './match';
-import { Tree } from './overlaps';
-import { State } from './state';
+import { defaultTrieOptions, TrieOptions } from "./options";
+import { Match } from "./match";
+import { Tree } from "./overlaps";
+import { State } from "./state";
 
 /** Number of accepted matches for one stored keyword. */
 export interface WordCount {
@@ -35,8 +35,8 @@ export class Trie {
    * @throws If the keyword is null, empty, or whitespace-only.
    */
   addKeyword(keyword: string): void {
-    if (keyword == null || keyword.trim() === '') {
-      throw new Error('Provided string `keyword` is a null or empty string.');
+    if (keyword == null || keyword.trim() === "") {
+      throw new Error("Provided string `keyword` is a null or empty string.");
     }
 
     let currentState = this.root;
@@ -44,7 +44,7 @@ export class Trie {
     const kw = this.options.removeWhiteSpaces ? cased.trim() : cased;
 
     // Greek final sigma and ordinary sigma share a path; Match.keyword retains the stored spelling.
-    const key = this.options.caseSensitive ? kw : kw.replace(/ς/g, 'σ');
+    const key = this.options.caseSensitive ? kw : kw.replace(/ς/g, "σ");
     for (let i = 0; i < key.length; i++) {
       const char = key.charAt(i);
       currentState = currentState.add(char);
@@ -62,9 +62,7 @@ export class Trie {
    */
   getMatches(text: string): Array<Match> {
     const matches: Match[] = [];
-    this.scan(text, (start, end, keyword) =>
-      matches.push(new Match(start, end, keyword))
-    );
+    this.scan(text, (start, end, keyword) => matches.push(new Match(start, end, keyword)));
     return this.options.allowOverlap
       ? matches
       : new Tree(matches).removeOverlappingSegments(matches);
@@ -80,15 +78,13 @@ export class Trie {
    */
   private scan(
     text: string,
-    emit?: (start: number, end: number, keyword: string) => void
+    emit?: (start: number, end: number, keyword: string) => void,
   ): boolean {
     if (!text) return false;
     if (!this.failureStateConstructed) this.constructFailureStates();
     let currentState: State = this.root;
 
-    const input = this.options.caseSensitive
-      ? text
-      : text.toLowerCase().replace(/ς/g, 'σ');
+    const input = this.options.caseSensitive ? text : text.toLowerCase().replace(/ς/g, "σ");
     // Map offsets in the lowercased input back to the original string. For "İx" → "i\u0307x",
     // the map is [0, <hole>, 1, 2]: a match ending between i and the dot must be skipped.
     let boundaries: number[] | undefined;
@@ -107,11 +103,7 @@ export class Trie {
     for (let pos = 0; pos < input.length; pos++) {
       currentState = this.getState(currentState, input.charAt(pos));
       if (!currentState.matches.length) continue;
-      for (
-        let state: State | undefined = currentState;
-        state;
-        state = state.output
-      ) {
+      for (let state: State | undefined = currentState; state; state = state.output) {
         for (const keyword of state.matches) {
           const from = pos - keyword.length + 1;
           const start = boundaries ? boundaries[from] : from;
@@ -119,8 +111,7 @@ export class Trie {
           if (start === undefined || after === undefined) continue;
           if (
             !this.options.wholeWords ||
-            (!wordChar.test(text.charAt(start - 1)) &&
-              !wordChar.test(text.charAt(after)))
+            (!wordChar.test(text.charAt(start - 1)) && !wordChar.test(text.charAt(after)))
           ) {
             if (!emit) return true;
             emit(start, after - 1, keyword);
@@ -168,7 +159,7 @@ export class Trie {
     }
 
     const wordCounts: Array<WordCount> = Array.from(wordCountMap.entries()).map(
-      ([keyword, occurrences]) => ({ keyword, occurrences })
+      ([keyword, occurrences]) => ({ keyword, occurrences }),
     );
 
     return wordCounts;

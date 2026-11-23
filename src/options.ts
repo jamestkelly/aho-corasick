@@ -15,5 +15,5 @@ export const defaultTrieOptions: TrieOptions = {
   allowOverlap: true,
   caseSensitive: false,
   removeWhiteSpaces: false,
-  wholeWords: false
+  wholeWords: false,
 };

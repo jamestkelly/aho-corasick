@@ -30,10 +30,7 @@ export class State {
     if (!this.keywords.length) {
       this.matches = this.output.matches;
       this.output = this.output.output;
-    } else if (
-      this.keywords.length + this.output.matches.length <=
-      maxOutputGroup
-    ) {
+    } else if (this.keywords.length + this.output.matches.length <= maxOutputGroup) {
       this.matches = this.keywords.concat(this.output.matches);
       this.output = this.output.output;
     }

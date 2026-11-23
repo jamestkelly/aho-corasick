@@ -1,4 +1,4 @@
-import { Segment } from './segment';
+import { Segment } from "./segment";
 
 /** Centered interval-tree node: local spans cross the midpoint, children lie to either side. */
 export class Node {
@@ -10,10 +10,7 @@ export class Node {
   /** Partition spans by position without splitting spans that cover the midpoint. */
   constructor(segments: Array<Segment>) {
     this.midPoint = this.getMidPoint(segments);
-    const paths: Array<Array<Segment>> = [
-      new Array<Segment>(),
-      new Array<Segment>()
-    ];
+    const paths: Array<Array<Segment>> = [new Array<Segment>(), new Array<Segment>()];
 
     segments.forEach((s) => {
       if (s.end < this.midPoint) paths[0].push(s);
