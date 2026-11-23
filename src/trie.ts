@@ -82,12 +82,13 @@ export class Trie {
     }
     for (let pos = 0; pos < input.length; pos++) {
       currentState = this.getState(currentState, input.charAt(pos));
+      if (!currentState.matches.length) continue;
       for (
         let state: State | undefined = currentState;
         state;
         state = state.output
       ) {
-        for (const keyword of state.keywords) {
+        for (const keyword of state.matches) {
           const from = pos - keyword.length + 1;
           const start = boundaries ? boundaries[from] : from;
           const after = boundaries ? boundaries[pos + 1] : pos + 1;
