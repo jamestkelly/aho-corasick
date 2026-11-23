@@ -1,6 +1,26 @@
 import { expect, test } from 'vitest';
 import { Trie, Match, defaultTrieOptions } from '../src/trie';
 
+test('hasMatch agrees with filtered matches across options and updates', () => {
+  for (const wholeWords of [false, true]) {
+    for (const allowOverlap of [false, true]) {
+      for (const caseSensitive of [false, true]) {
+        const trie = new Trie([' cat ', 'İ'], {
+          wholeWords,
+          allowOverlap,
+          caseSensitive,
+          removeWhiteSpaces: true
+        });
+        for (const text of ['', 'bobcat', 'CAT!', 'only İ', 'İx', 'none']) {
+          expect(trie.hasMatch(text)).toBe(trie.getMatches(text).length > 0);
+        }
+        trie.addKeyword('new');
+        expect(trie.hasMatch('new')).toBe(true);
+      }
+    }
+  }
+});
+
 test('Unicode casing preserves original UTF-16 spans and whole source characters', () => {
   const trie = new Trie(['İ', 'ΟΣ', '𐐀', 'i', 'x']);
   expect(trie.getMatches('İΟσ𐐨X')).toStrictEqual([

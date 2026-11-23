@@ -15,6 +15,7 @@ const trie = new Trie(['she', 'he']);
 trie.getMatches('She!');           // she [0, 2], he [1, 2]
 trie.getNonMatches('She!');        // ['!']
 trie.getStringOccurrences('he');   // [{ keyword: 'he', occurrences: 1 }]
+trie.hasMatch('she said hello');   // true; stops at the first qualifying match
 trie.addKeyword('hers');           // the next search rebuilds the failure links
 ```
 
