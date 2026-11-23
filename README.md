@@ -1,259 +1,50 @@
-<a name="readme-top"></a>
+# @jimtkelly/aho-corasick
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-<br />
-<div align="center">
-  <a href="https://github.com/jamestkelly/aho-corasick">
-    <img src="doc/img/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
-<h3 align="center">aho-corasick</h3>
-
-  <p align="center">
-    An implementation of the Aho-Corasick algorithm in TypeScript.
-    <br />
-    <a href="https://github.com/jamestkelly/aho-corasick"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/jamestkelly/aho-corasick">View Demo</a>
-    ·
-    <a href="https://github.com/jamestkelly/aho-corasick/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/jamestkelly/aho-corasick/issues">Request Feature</a>
-  </p>
-</div>
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#usage">Usage</a>
-      <ul>
-        <li>
-          <a href="#create-trie-and-add-keywords">
-            Create <code>Trie</code> and Add Keywords
-          </a>
-        </li>
-        <li>
-          <a href="#get-matches">
-            Get <code>Matches</code>
-          </a>
-        </li>
-        <li>
-          <a href="#get-inverse-matches">
-            Get Inverse <code>Matches</code>
-          </a>
-        </li>
-        <li><a href="#get-string-occurrences">Get String Occurrences</a></li>
-      </ul>
-    </li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-    <li><a href="#references">References</a></li>
-  </ol>
-</details>
-
-<!-- ABOUT THE PROJECT -->
-
-## About The Project
-
-<div align="center">
-  <a href="https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm">
-      <img src="doc/img/aho-corasick-diagram-wikipedia.png" alt="Logo" width="494" height="602">
-  </a>
-  <p>
-      <b>Figure 1:</b> Aho-Corasick Algorithm Diagram 
-      <a href="https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm">
-          [1]
-      </a>
-  </p>
-</div>
-
-The Aho—Corasick algorithm is a [string-searching algorithm](https://en.wikipedia.org/wiki/String-searching_algorithm) invented by Alfred V. Aho and Margaret J. Corasick in 1975. [\[1\]](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm). This repository contains an implementation of this algorithm in TypeScript for use in efficient string matching as an aid to bibliographic searches.
-
-This package is referenced and inspired from [tanishiking's aho-corasick-js](https://github.com/tanishiking/aho-corasick-js) package, providing some minor improvements to optimisation and additional functionality. 
-
-This package is hosted on `npm` and is accessible [here](https://www.npmjs.com/package/@jimtkelly/aho-corasick).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-### Built With
-
-- [![npm][npm.js]][npm-url]
-- [![TypeScript][TypeScript.ts]][TypeScript-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- GETTING STARTED -->
-
-## Getting Started
-
-### Installation
-
-To use this project, please install the required packages as available from `npm`.
-
-- `npm`
-  ```sh
-  npm i @jimtkelly/aho-corasick
-  ```
-
-<!-- USAGE EXAMPLES -->
-
-## Usage
-
-### Create `Trie` and Add Keywords
-
-It's important to note that if the `param`, `keywords` is an array of empty strings, e.g., `[' ', '']`, then an error will be thrown.
-
-```typescript
-import { Trie } from '@jimtkelly/aho-corasick';
-
-const trie = new Trie();
-trie.addKeyword('apple');
-trie.addKeyword('banana');
-```
-
-### Get `Matches`
-
-```typescript
-const trie = new Trie(['apple', 'banana']);
-const matches = trie.getMatches('apple banana');
-console.log(matches);
-// Output: [{ start: 0, end: 4, keyword: 'apple' }, { start: 6, end: 11, keyword: 'banana' }]
-```
-
-### Get Inverse `Matches`
-
-```typescript
-const trie = new Trie(['cat', 'dog']);
-const nonMatches = trie.getNonMatches('The cat and the dog');
-console.log(nonMatches);
-// Output: ['The ', ' and the ']
-```
-
-### Get String Occurrences
-
-```typescript
-const trie = new Trie(['apple', 'banana']);
-const occurrences = trie.getStringOccurrences('apple banana apple');
-console.log(occurrences);
-// Output: [{ keyword: 'apple', occurrences: 2 }, { keyword: 'banana', occurrences: 1 }]
-```
-
-_For more examples, please refer to the [Documentation](https://github.com/jamestkelly/aho-corasick/blob/main/doc/examples.ts)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ROADMAP -->
-
-## Roadmap
-
-- [x] Base implementation of the Aho-corasick algorithm.
-- [x] Add GitHub workflow to test & build the package.
-- [x] Implement feature to return `non-matches`, i.e., all words that _did not match_.
-  - [x] Additional nice to have is to only return the words that matched and their counts, i.e., without position in the string.
-
-See the [open issues](https://github.com/jamestkelly/aho-corasick/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTRIBUTING -->
-
-## Contributing
-
-Use Node 24 and the pnpm version pinned in `package.json` for development:
+Search text for many keywords in one pass with an [Aho–Corasick automaton](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm). The package includes TypeScript declarations and has no runtime dependencies.
 
 ```sh
-pnpm install --frozen-lockfile
-pnpm validate
+npm install @jimtkelly/aho-corasick
 ```
 
-Validation runs the unit tests, builds and packs the library, then installs the
-tarball in a temporary TypeScript project and runs a search through the public import.
+```ts
+import { Trie } from '@jimtkelly/aho-corasick';
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+const trie = new Trie(['she', 'he']);
+trie.getMatches('She!');           // she [0, 2], he [1, 2]
+trie.getNonMatches('She!');        // ['!']
+trie.getStringOccurrences('he');   // [{ keyword: 'he', occurrences: 1 }]
+trie.addKeyword('hers');           // the next search rebuilds the failure links
+```
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+The supported import is the package root (CommonJS `require` also works).
+`Match.start` and `Match.end` are **inclusive UTF-16 indices in the original text**:
+use `text.slice(match.start, match.end + 1)`. `match.size()` is the span length;
+`match.isEqual(other)` compares endpoints. Empty or whitespace-only keywords throw.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+| Constructor option | Default | Behavior |
+|---|---|---|
+| `caseSensitive` | `false` | By default keywords and text are lowercased using JavaScript casing, with Greek sigma forms matched equivalently. `Match.keyword` is the lowercased keyword. There is no accent removal, locale-specific casing, or Unicode normalization. |
+| `removeWhiteSpaces` | `false` | Trim leading and trailing whitespace from **keywords**, never from the text. |
+| `wholeWords` | `false` | Require both neighbors to be absent or outside ASCII `A–Z`, `a–z`, `0–9`. An underscore or non-ASCII letter is a boundary. |
+| `allowOverlap` | `true` | Emit by end position, longest suffix first. When disabled, longer original spans win, ties favor earlier emission, and accepted results are returned by start position. |
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Repeated keyword insertions produce repeated matches, even for identical spans with
+overlap disabled. Counts reflect the same filtered matches, in first-result order.
+See the [runnable example](doc/example.cjs).
 
-<!-- LICENSE -->
+## Development
 
-## License
+Use Node 24 and the pnpm version pinned in `package.json`. Run
+`pnpm install --frozen-lockfile`, then `pnpm validate` to type-check the tests,
+run Vitest, and test a clean TypeScript consumer install. Use `pnpm test:watch`
+while editing the matcher. `pnpm bench` reports local medians for build, scan,
+count, and overlap workloads. The library ships CommonJS JavaScript using ES2015
+syntax; Node 24 is the development toolchain rather than a consumer requirement.
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+## Credits and license
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTACT -->
-
-## Contact
-
-Jim Kelly - [jimkelly.t@outlook.com](mailto:jimkelly.t@outlook.com)
-
-Project Link: [https://github.com/jamestkelly/aho-corasick](https://github.com/jamestkelly/aho-corasick)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ACKNOWLEDGMENTS -->
-
-## Acknowledgments
-
-- [aho-corasick-js | tanishking](https://github.com/tanishiking/aho-corasick-js)
-- [Best-README-Template | othneildrew](https://github.com/othneildrew/Best-README-Template/tree/master)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## References
-
-\[1\] "Aho–Corasick algorithm," in Wikipedia: The Free Encyclopedia; (Wikimedia Foundation Inc., updated 11 December 2023, 05:39 UTC) [encyclopedia on-line]; available from https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm; Internet; retrieved 14 December 2023.
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[contributors-shield]: https://img.shields.io/github/contributors/jamestkelly/aho-corasick.svg?style=for-the-badge
-[contributors-url]: https://github.com/jamestkelly/aho-corasick/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/jamestkelly/aho-corasick.svg?style=for-the-badge
-[forks-url]: https://github.com/jamestkelly/aho-corasick/network/members
-[stars-shield]: https://img.shields.io/github/stars/jamestkelly/aho-corasick.svg?style=for-the-badge
-[stars-url]: https://github.com/jamestkelly/aho-corasick/stargazers
-[issues-shield]: https://img.shields.io/github/issues/jamestkelly/aho-corasick.svg?style=for-the-badge
-[issues-url]: https://github.com/jamestkelly/aho-corasick/issues
-[license-shield]: https://img.shields.io/github/license/jamestkelly/aho-corasick.svg?style=for-the-badge
-[license-url]: https://github.com/jamestkelly/aho-corasick/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/jimkellyt
-[product-screenshot]: doc/img/aho-corasick-diagram-wikipedia.png
-[npm.js]: https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white
-[npm-url]: https://www.npmjs.com/
-[TypeScript.ts]: https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white
-[TypeScript-url]: https://www.typescriptlang.org/
+Based on [Aho and Corasick's algorithm](https://doi.org/10.1145/360825.360855)
+and inspired by [tanishiking/aho-corasick-js](https://github.com/tanishiking/aho-corasick-js),
+[robert-bor/aho-corasick](https://github.com/robert-bor/aho-corasick), and
+[hankcs/aho-corasick](https://github.com/hankcs/aho-corasick).
+Released under the [MIT license](LICENSE).
