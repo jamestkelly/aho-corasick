@@ -54,7 +54,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
   review-gate:
     # Keep the status context required by the main branch ruleset.
-    name: Review Gate / validate
+    name: Review Gate / Validate
     if: always() && github.event_name == 'pull_request'
     needs: [validate, branch-name, pr-title]
     runs-on: ubuntu-latest
