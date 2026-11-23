@@ -96,7 +96,6 @@ syntax; Node 24 is the development toolchain rather than a consumer requirement.
 
 After a squash merge to `main`, CI validates the library and semantic-release
 uses conventional commits to publish npm versions and GitHub release notes.
-CI then installs the exact version from npm and checks a TypeScript consumer.
 Before enabling publishing, configure the npm trusted publisher for
 `@jimtkelly/aho-corasick`: GitHub owner `jamestkelly`, repository `aho-corasick`,
 workflow `release.yml`, no environment. The release uses OIDC, not an npm token.
