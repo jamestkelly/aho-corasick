@@ -39,8 +39,14 @@
   },
   "homepage": "https://github.com/jamestkelly/aho-corasick#readme",
   "devDependencies": {
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/github": "^12.0.11",
+    "@semantic-release/npm": "^13.2.0",
+    "@semantic-release/release-notes-generator": "^14.1.1",
     "@types/node": "^24.19.2",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
     "prettier": "^3.1.0",
+    "semantic-release": "^25.0.9",
     "typescript": "~5.9.3",
     "vitest": "^5.1.1"
   },
