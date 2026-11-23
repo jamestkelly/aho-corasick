@@ -22,6 +22,7 @@ try {
       execFileSync('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', ...installArgs], { cwd, stdio: ['inherit', 'inherit', 'pipe'], encoding: 'utf8' });
       break;
     } catch (error) {
+      // npm can acknowledge publication before the new version is available to install.
       if (!version || attempt >= 7 || !(error instanceof Error) ||
           !('stderr' in error) || typeof error.stderr !== 'string' ||
           !/^npm error code ETARGET$/m.test(error.stderr)) throw error;

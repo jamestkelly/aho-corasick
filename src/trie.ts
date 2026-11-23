@@ -10,7 +10,12 @@ export interface WordCount {
 }
 const wordChar = /[a-zA-Z0-9]/;
 
-/** Reusable Aho–Corasick matcher for a dictionary of literal keywords. */
+/**
+ * Search text for many literal keywords in one pass. Keywords with a common prefix
+ * share a path in the trie. Suffix links let the scan keep a partial match instead
+ * of backing up in the text: with `she` and `hers` inserted, reading `r` after
+ * `she` continues from `he` to `her`. Reuse the trie across input strings.
+ */
 export class Trie {
   private failureStateConstructed: boolean = false;
   private readonly root: State = new State();
@@ -38,6 +43,7 @@ export class Trie {
     const cased = this.options.caseSensitive ? keyword : keyword.toLowerCase();
     const kw = this.options.removeWhiteSpaces ? cased.trim() : cased;
 
+    // Greek final sigma and ordinary sigma share a path; Match.keyword retains the stored spelling.
     const key = this.options.caseSensitive ? kw : kw.replace(/ς/g, 'σ');
     for (let i = 0; i < key.length; i++) {
       const char = key.charAt(i);
@@ -50,7 +56,9 @@ export class Trie {
 
   /**
    * Return inclusive UTF-16 spans in the original text. Overlaps are emitted by
-   * end position, longest suffix first; with overlaps disabled, results are in start order.
+   * end position, longest suffix first. With overlaps disabled, longer spans win
+   * (first emitted breaks ties); identical spans survive and results are in start order.
+   * Recover the original substring with `text.slice(match.start, match.end + 1)`.
    */
   getMatches(text: string): Array<Match> {
     const matches: Match[] = [];
@@ -67,7 +75,9 @@ export class Trie {
     return this.scan(text);
   }
 
-  /** Emit all candidate spans; without an emitter, return true on the first hit. */
+  /** With a callback, report every qualifying span and return false at exhaustion.
+   * Without one, return true immediately on the first hit (`hasMatch`).
+   */
   private scan(
     text: string,
     emit?: (start: number, end: number, keyword: string) => void
@@ -79,7 +89,8 @@ export class Trie {
     const input = this.options.caseSensitive
       ? text
       : text.toLowerCase().replace(/ς/g, 'σ');
-    // A lowercase expansion (e.g. İ → i̇) has no original boundary inside it.
+    // Map offsets in the lowercased input back to the original string. For "İx" → "i\u0307x",
+    // the map is [0, <hole>, 1, 2]: a match ending between i and the dot must be skipped.
     let boundaries: number[] | undefined;
     if (input.length !== text.length) {
       boundaries = [0];
@@ -146,7 +157,6 @@ export class Trie {
   /** Count accepted matches by stored keyword in first-result order, omitting misses. */
   getStringOccurrences(text: string): Array<WordCount> {
     const wordCountMap = new Map<string, number>();
-    /** Share the same accumulator for streamed and overlap-filtered results. */
     const countKeyword = (keyword: string) => {
       const count = wordCountMap.get(keyword) || 0;
       wordCountMap.set(keyword, count + 1);

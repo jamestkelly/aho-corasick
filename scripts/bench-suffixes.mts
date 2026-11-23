@@ -10,7 +10,7 @@ const trie = new Trie(keys, { caseSensitive: true });
 trie.hasMatch('!'); // include compiled failure links in retained heap
 global.gc();
 const bytes = process.memoryUsage().heapUsed - before;
-/** Sum every occurrence, not just the number of distinct matching keys. */
+/** Position k (one-based) ends k matching suffixes: 1 + … + 1000 = 500,500 hits. */
 const run = () =>
   trie.getStringOccurrences(text).reduce((n, m) => n + m.occurrences, 0);
 assert.equal(run(), 500500);

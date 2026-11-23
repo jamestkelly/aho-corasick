@@ -1,6 +1,5 @@
 /** A span whose endpoints are inclusive UTF-16 indices in the source text. */
 export class Segment {
-  /** Store the first and last included indices without converting to slice bounds. */
   constructor(
     readonly start: number,
     readonly end: number

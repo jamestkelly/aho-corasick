@@ -2,6 +2,7 @@ import { expect, test } from 'vitest';
 import { Trie, Match, defaultTrieOptions } from '../src/trie';
 
 test('long suffix chains preserve duplicates and order after rebuilding', () => {
+  // More than two 32-entry output groups: one array of matches cannot cover this chain.
   const keys = Array.from({ length: 70 }, (_, i) => 'a'.repeat(i + 1));
   const trie = new Trie(keys);
   const text = 'a'.repeat(70);
@@ -115,6 +116,7 @@ test('all short binary texts agree with a naive matcher, including duplicates an
   for (const allowOverlap of [true, false]) {
     const trie = new Trie(keys, { allowOverlap });
     for (let bits = 1; bits < 256; bits++) {
+      // Drop the leading 1 to enumerate every a/b string of length 0 through 7 exactly once.
       const text = bits
         .toString(2)
         .slice(1)

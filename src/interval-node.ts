@@ -33,21 +33,21 @@ export class Node {
   /** Find intersecting spans, excluding all spans with exactly the query endpoints. */
   getOverlappingSegments(s: Segment): Array<Segment> {
     if (this.midPoint < s.start) {
-      // Overlapping segments in the right subtree and self
+      // The query starts right of the midpoint, beyond every span in the left subtree.
       const rightChild = this.right ? this.right.getOverlappingSegments(s) : [];
       const self = this.segments.filter((n) => n.end >= s.start);
 
       const result = [...rightChild, ...self];
       return result.filter((n) => !s.isEqual(n));
     } else if (s.end < this.midPoint) {
-      // Overlapping segments in the left subtree and self
+      // The query ends left of the midpoint, before every span in the right subtree.
       const leftChild = this.left ? this.left.getOverlappingSegments(s) : [];
       const self = this.segments.filter((n) => n.start <= s.end);
 
       const result = [...leftChild, ...self];
       return result.filter((n) => !s.isEqual(n));
     } else {
-      // Overlapping segments in both subtrees and self
+      // The query covers the midpoint, so every local span intersects it.
       const rightChild = this.right ? this.right.getOverlappingSegments(s) : [];
       const leftChild = this.left ? this.left.getOverlappingSegments(s) : [];
 
